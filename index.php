@@ -43,8 +43,23 @@ $now = strtotime('now');
 
         <nav class="user-menu">
 
-        <!-- здесь должен быть PHP код для показа аватара пользователя -->
-
+        <? if($is_auth == true) :?>
+            <div class="user-menu__image">
+                <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
+            </div>
+            <div class="user-menu__logged">
+                <p><?= $user_name ?></p>
+            </div>
+        <? elseif($is_auth == false) :?>
+            <ul class="user-menu__list">
+                <li class="user-menu__item">
+                      <a href="#">Регистрация</a>
+                </li>
+                <li class="user-menu__item">
+                      <a href="#">Вход</a>
+                </li>
+            </ul>
+        <? endif ?>
         </nav>
     </div>
 </header>
