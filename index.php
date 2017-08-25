@@ -16,8 +16,11 @@ $tomorrow = strtotime('tomorrow midnight');
 // временная метка для настоящего времени
 $now = strtotime('now');
 
-// далее нужно вычислить оставшееся время до начала следующих суток и записать его в переменную $lot_time_remaining
-// ...
+// значение оставшегося времени в секундах
+$difference = ($tomorrow - $now);
+
+$lot_time_remaining = str_pad(floor($difference/3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60 ) % 60, 2, '0', STR_PAD_LEFT);
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -50,7 +53,7 @@ $now = strtotime('now');
             <div class="user-menu__logged">
                 <p><?= $user_name ?></p>
             </div>
-        <? elseif($is_auth == false) :?>
+        <? else :?>
             <ul class="user-menu__list">
                 <li class="user-menu__item">
                       <a href="#">Регистрация</a>
