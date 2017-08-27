@@ -1,7 +1,7 @@
 <?php
 $is_auth = (bool) rand(0, 1);
 
-$user_name = 'Константин';
+$user_title = 'Константин';
 $user_avatar = 'img/user.jpg';
 
 // устанавливаем часовой пояс в Московское время
@@ -39,8 +39,8 @@ $lot_time_remaining = str_pad(floor($difference/3600), 2, '0', STR_PAD_LEFT) . "
             <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
         <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
-            <input type="search" name="search" placeholder="Поиск лота">
-            <input class="main-header__search-btn" type="submit" name="find" value="Найти">
+            <input type="search" title="search" placeholder="Поиск лота">
+            <input class="main-header__search-btn" type="submit" title="find" value="Найти">
         </form>
         <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
 
@@ -51,7 +51,7 @@ $lot_time_remaining = str_pad(floor($difference/3600), 2, '0', STR_PAD_LEFT) . "
                 <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
             </div>
             <div class="user-menu__logged">
-                <p><?= $user_name ?></p>
+                <p><?= $user_title ?></p>
             </div>
         <? else :?>
             <ul class="user-menu__list">
@@ -92,21 +92,83 @@ $lot_time_remaining = str_pad(floor($difference/3600), 2, '0', STR_PAD_LEFT) . "
             </li>
         </ul>
     </section>
+    <? $lots_categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"] ?>
     <section class="lots">
         <div class="lots__header">
             <h2>Открытые лоты</h2>
             <select class="lots__select">
-                <option>Все категории</option>
+                <? foreach ($lots_categories as $key => $lot_cat) {
+                    print("<option>$lot_cat</option>");
+                } ?>
+                <?/*<option>Все категории</option>
                 <option>Доски и лыжи</option>
                 <option>Крепления</option>
                 <option>Ботинки</option>
                 <option>Одежда</option>
                 <option>Инструменты</option>
-                <option>Разное</option>
+                <option>Разное</option>*/?>
             </select>
         </div>
+        <? $lots_list = [
+            0 => [
+                "title" => "2014 Rossignol District Snowboard",
+                "category" => "Доски и лыжи",
+                "price" => "10999",
+                "src" => "img/lot-1.jpg"
+            ],
+            1 => [
+                "title" => "DC Ply Mens 2016/2017 Snowboard",
+                "category" => "Доски и лыжи",
+                "price" => "159999",
+                "src" => "img/lot-2.jpg"
+            ],
+            2 => [
+                "title" => "Крепления Union Contact Pro 2015 года размер L/XL",
+                "category" => "Крепления",
+                "price" => "8000",
+                "src" => "img/lot-3.jpg"
+            ],
+            3 => [
+                "title" => "Ботинки для сноуборда DC Mutiny Charocal",
+                "category" => "Ботинки",
+                "price" => "10999",
+                "src" => "img/lot-4.jpg"
+            ],
+            4 => [
+                "title" => "Куртка для сноуборда DC Mutiny Charocal",
+                "category" => "Одежда",
+                "price" => "7500",
+                "src" => "img/lot-5.jpg"
+            ],
+            5 => [
+                "title" => "Маска Oakley Canopy",
+                "category" => "Разное",
+                "price" => "5400",
+                "src" => "img/lot-6.jpg"
+            ]
+        ] ?>
         <ul class="lots__list">
-            <li class="lots__item lot">
+            <? foreach ($lots_list as $key => $lot) :?>
+                <li class="lots__item lot">
+                    <div class="lot__image">
+                        <img src="<?= $lot["src"] ?>" width="350" height="260" alt="Сноуборд">
+                    </div>
+                    <div class="lot__info">
+                        <span class="lot__category"><?= $lot["category"] ?></span>
+                        <h3 class="lot__title"><a class="text-link" href="lot.html"><?= $lot["title"] ?></a></h3>
+                        <div class="lot__state">
+                            <div class="lot__rate">
+                                <span class="lot__amount">Стартовая цена</span>
+                                <span class="lot__cost"><?= $lot["price"] ?><b class="rub">р</b></span>
+                            </div>
+                            <div class="lot__timer timer">
+                                <?=$lot_time_remaining;?>
+                            </div>
+                        </div>
+                    </div>    
+                </li>
+            <? endforeach; ?>
+            <?/*<li class="lots__item lot">
                 <div class="lot__image">
                     <img src="img/lot-1.jpg" width="350" height="260" alt="Сноуборд">
                 </div>
@@ -123,7 +185,7 @@ $lot_time_remaining = str_pad(floor($difference/3600), 2, '0', STR_PAD_LEFT) . "
                         </div>
                     </div>
                 </div>
-            </li>
+            </li>*/?>
         </ul>
     </section>
 </main>
