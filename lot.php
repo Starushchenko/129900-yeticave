@@ -1,5 +1,8 @@
 <?php
 
+define("DAY_SECONDS", 86400);
+define("HOUR_SECONDS", 7200);
+
 // ставки пользователей, которыми надо заполнить таблицу
 $bets = [
     ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
@@ -28,22 +31,16 @@ function words_ending($number, $words_array) {
 
 // Функция рассчета времени в относительном формате
 function calc_time_ago($ts) {
-    $now =  strtotime('now');
-    $hour_ago = strtotime("- 1 hour");
-    $yesterday = strtotime("- 1 day");
+    $delta_ts = strtotime('now') - $ts;
     
-    if ($ts > $yesterday) {
-        if ($ts > $hour_ago) {
-            $time_gone = ($now - $ts)/60 . " " . words_ending(($now - $ts)/60, ["минута", "минуты", "минут"]) . " назад";
-            print($time_gone);
-        }
-        else {
-            $time_gone = ($now - $ts)/3600 . " " . words_ending(($now - $ts)/3600, ["час", "часа", "часов"]) . " назад";
-            print($time_gone);
-        }
-    }
-    else {
+    if ($delta_ts >= DAY_SECONDS)  {
         print(date("d:m:y в h:i", $ts));
+    } else if ($delta_ts >= HOUR_SECONDS) {
+        $time_gone = $delta_ts/3600 . " " . words_ending($delta_ts/3600, ["час", "часа", "часов"]) . " назад";
+        print($time_gone);
+    } else {
+        $time_gone = $delta_ts/60 . " " . words_ending($delta_ts/60, ["минута", "минуты", "минут"]) . " назад";
+        print($time_gone);
     }
 }
 ?>
@@ -57,7 +54,9 @@ function calc_time_ago($ts) {
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-
+<script>
+    console.log(<?=$now?>);
+</script>
 <header class="main-header">
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
