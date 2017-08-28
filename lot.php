@@ -7,6 +7,45 @@ $bets = [
     ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
+
+// Функция правильного окончания слов "минута" и "час" в зависимости от числа
+function words_ending($number, $words_array) {
+    switch ( ($number >= 20) ? $number % 10 : $number )
+    {
+        case 1:
+            $result = $words_array[0];
+            break;
+        case 2:
+        case 3:
+        case 4:
+            $result = $words_array[1];
+            break;
+        default:
+            $result = $words_array[2];
+    }
+    return $result;
+}
+
+// Функция рассчета времени в относительном формате
+function calc_time_ago($ts) {
+    $now =  strtotime('now');
+    $hour_ago = strtotime("- 1 hour");
+    $yesterday = strtotime("- 1 day");
+    
+    if ($ts > $yesterday) {
+        if ($ts > $hour_ago) {
+            $time_gone = ($now - $ts)/60 . " " . words_ending(($now - $ts)/60, ["минута", "минуты", "минут"]) . " назад";
+            print($time_gone);
+        }
+        else {
+            $time_gone = ($now - $ts)/3600 . " " . words_ending(($now - $ts)/3600, ["час", "часа", "часов"]) . " назад";
+            print($time_gone);
+        }
+    }
+    else {
+        print(date("d:m:y в h:i", $ts));
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -109,13 +148,14 @@ $bets = [
                 </div>
                 <div class="history">
                     <h3>История ставок (<span>4</span>)</h3>
-                    <!-- заполните эту таблицу данными из массива $bets-->
                     <table class="history__list">
-                        <tr class="history__item">
-                            <td class="history__name"><!-- имя автора--></td>
-                            <td class="history__price"><!-- цена--> р</td>
-                            <td class="history__time"><!-- дата в человеческом формате--></td>
-                        </tr>
+                        <?foreach ($bets as $key => $bet) : ?>
+                            <tr class="history__item">
+                                <td class="history__name"><?= $bet["name"] ?></td>
+                                <td class="history__price"><?= $bet["price"] ?>р</td>
+                                <td class="history__time"><?= calc_time_ago($bet["ts"]) ?></td>
+                            </tr>
+                        <? endforeach; ?>
                     </table>
                 </div>
             </div>
