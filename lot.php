@@ -54,9 +54,7 @@ function calc_time_ago($ts) {
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<script>
-    console.log(<?=$now?>);
-</script>
+
 <header class="main-header">
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
