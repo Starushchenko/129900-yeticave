@@ -36,11 +36,9 @@ function calc_time_ago($ts) {
     if ($delta_ts >= DAY_SECONDS)  {
         print(date("d:m:y в h:i", $ts));
     } else if ($delta_ts >= HOUR_SECONDS) {
-        $time_gone = $delta_ts/3600 . " " . words_ending($delta_ts/3600, ["час", "часа", "часов"]) . " назад";
-        print($time_gone);
+        print($delta_ts/3600 . " " . words_ending($delta_ts/3600, ["час", "часа", "часов"]) . " назад");
     } else {
-        $time_gone = $delta_ts/60 . " " . words_ending($delta_ts/60, ["минута", "минуты", "минут"]) . " назад";
-        print($time_gone);
+        print($delta_ts/60 . " " . words_ending($delta_ts/60, ["минута", "минуты", "минут"]) . " назад");
     }
 }
 ?>
