@@ -1,6 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+
 define("DAY_SECONDS", 86400);
 define("HOUR_SECONDS", 7200);
 
