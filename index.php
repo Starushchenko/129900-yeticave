@@ -67,13 +67,13 @@ $lots_list = [
 ];
 
 // Компиляция шаблона страницы
-$page_content = compile_template('index.php', ['lots_categories' => $lots_categories, 'lots_list' => $lots_list, 'lot_time_remaining' => $lot_time_remaining]);
-
-// Компиляция шаблона сайта
-$layout_content = compile_template('layout.php', ['page_title'   => 'Главная страница', 'is_auth' => $is_auth,
-                                                  'user_avatar'  => $user_avatar, 'user_name' => $user_name,
-                                                  'page_content' => $page_content
+$page_content = renderTemplate('index', ['lots_categories'    => $lots_categories, 'lots_list' => $lots_list,
+                                         'lot_time_remaining' => $lot_time_remaining
 ]);
 
-print($layout_content);
+// Компиляция шаблона сайта
+echo renderTemplate('layout', [
+    'page_title'   => 'Главная страница', 'is_auth' => $is_auth, 'user_avatar' => $user_avatar,
+    'user_name'    => $user_name, 'page_content' => $page_content
+]);
 ?>
