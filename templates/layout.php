@@ -1,54 +1,8 @@
-<?php
-
-define("DAY_SECONDS", 86400);
-define("HOUR_SECONDS", 3600);
-
-// ставки пользователей, которыми надо заполнить таблицу
-$bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) . ' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) . ' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) . ' hour')],
-    ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
-];
-
-// Функция правильного окончания слов "минута" и "час" в зависимости от числа
-function words_ending(int $number, array $words_array) {
-    switch (($number >= 20) ? $number % 10 : $number) {
-        case 1:
-            $result = array_key_exists(0, $words_array) ? $words_array[0] : 'n';
-            break;
-        case 2:
-        case 3:
-        case 4:
-            $result = array_key_exists(1, $words_array) ? $words_array[1] : 'n';
-            break;
-        default:
-            $result = array_key_exists(2, $words_array) ? $words_array[2] : 'n';
-    }
-    
-    return $result;
-}
-
-// Функция рассчета времени в относительном формате
-function calc_time_ago($ts) {
-    $delta_ts = strtotime('now') - $ts;
-    
-    if ($delta_ts >= DAY_SECONDS) {
-        print(date("d.m.y в H:i", $ts));
-    } else if ($delta_ts >= HOUR_SECONDS) {
-        print($delta_ts / 3600 . " " . words_ending(floor($delta_ts / 3600), ["час", "часа", "часов"]) . " назад");
-    } else {
-        print($delta_ts / 60 . " " . words_ending(floor($delta_ts / 60), ["минута", "минуты", "минут"]) . " назад");
-    }
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>DC Ply Mens 2016/2017 Snowboard</title>
+    <title><?= $page_title ?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -57,107 +11,39 @@ function calc_time_ago($ts) {
 <header class="main-header">
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
-        <a class="main-header__logo" href="index.html">
+        <a class="main-header__logo">
             <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
         <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
             <input type="search" name="search" placeholder="Поиск лота">
             <input class="main-header__search-btn" type="submit" name="find" value="Найти">
         </form>
-        <a class="main-header__add-lot button" href="">Добавить лот</a>
+        <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
+        
         <nav class="user-menu">
-            <ul class="user-menu__list">
-                <li class="user-menu__item">
-                    <a href="">Регистрация</a>
-                </li>
-                <li class="user-menu__item">
-                    <a href="#">Вход</a>
-                </li>
-            </ul>
+            
+            <? if($is_auth == true) :?>
+                <div class="user-menu__image">
+                    <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
+                </div>
+                <div class="user-menu__logged">
+                    <p><?= $user_name ?></p>
+                </div>
+            <? else :?>
+                <ul class="user-menu__list">
+                    <li class="user-menu__item">
+                        <a href="#">Регистрация</a>
+                    </li>
+                    <li class="user-menu__item">
+                        <a href="#">Вход</a>
+                    </li>
+                </ul>
+            <? endif ?>
         </nav>
     </div>
 </header>
 
-<main>
-    <nav class="nav">
-        <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="">Разное</a>
-            </li>
-        </ul>
-    </nav>
-    <section class="lot-item container">
-        <h2>DC Ply Mens 2016/2017 Snowboard</h2>
-        <div class="lot-item__content">
-            <div class="lot-item__left">
-                <div class="lot-item__image">
-                    <img src="img/lot-image.jpg" width="730" height="548" alt="Сноуборд">
-                </div>
-                <p class="lot-item__category">Категория: <span>Доски и лыжи</span></p>
-                <p class="lot-item__description">Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
-                    снег
-                    мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
-                    снаряд
-                    отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
-                    кэмбер
-                    позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется,
-                    просто
-                    посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла
-                    равнодушным.</p>
-            </div>
-            <div class="lot-item__right">
-                <div class="lot-item__state">
-                    <div class="lot-item__timer timer">
-                        10:54:12
-                    </div>
-                    <div class="lot-item__cost-state">
-                        <div class="lot-item__rate">
-                            <span class="lot-item__amount">Текущая цена</span>
-                            <span class="lot-item__cost">11 500</span>
-                        </div>
-                        <div class="lot-item__min-cost">
-                            Мин. ставка <span>12 000 р</span>
-                        </div>
-                    </div>
-                    <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-                        <p class="lot-item__form-item">
-                            <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="number" name="cost" placeholder="12 000">
-                        </p>
-                        <button type="submit" class="button">Сделать ставку</button>
-                    </form>
-                </div>
-                <div class="history">
-                    <h3>История ставок (<span>4</span>)</h3>
-                    <table class="history__list">
-                        <? foreach ($bets as $key => $bet) : ?>
-                            <tr class="history__item">
-                                <td class="history__name"><?= $bet["name"] ?></td>
-                                <td class="history__price"><?= $bet["price"] ?>р</td>
-                                <td class="history__time"><?= calc_time_ago($bet["ts"]) ?></td>
-                            </tr>
-                        <? endforeach; ?>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-</main>
+<main class="container"><?= $page_content ?></main>
 
 <footer class="main-footer">
     <nav class="nav">
