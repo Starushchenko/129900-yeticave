@@ -190,7 +190,9 @@ if (isset($_GET['id']) and array_key_exists($_GET['id'], $lots_list)) : ?>
     </body>
     </html>
 
-<? else : header(http_response_code(404));
-endif;
+<? else : header(http_response_code(404)); ?>
+<p>Страница не существует либо была перемещена :(</p>
+<p><a href="/">Вернуться на главную</a></p>
+<? endif;
 
 ob_end_flush() ?>
