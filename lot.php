@@ -56,11 +56,11 @@ if (isset($_GET['id']) and array_key_exists($_GET['id'], $lots_list)) : ?>
     <main>
         <nav class="nav">
             <ul class="nav__list container">
-                <? foreach ($lots_categories as $lot_cat) {
-                    print("<li class=\"nav__item\">
-                               <a href=\"\">$lot_cat</a>
-                           </li>");
-                } ?>
+                <? foreach ($lots_categories as $lot_cat) : ?>
+                    <li class="nav__item">
+                        <a href="#"><?= $lot_cat ?></a>
+                    </li>
+                <? endforeach; ?>
             </ul>
         </nav>
         <section class="lot-item container">
@@ -127,11 +127,11 @@ if (isset($_GET['id']) and array_key_exists($_GET['id'], $lots_list)) : ?>
     <footer class="main-footer">
         <nav class="nav">
             <ul class="nav__list container">
-                <? foreach ($lots_categories as $lot_cat) {
-                    print("<li class=\"nav__item\">
-                               <a href=\"\">$lot_cat</a>
-                           </li>");
-                } ?>
+                <? foreach ($lots_categories as $lot_cat) : ?>
+                    <li class="nav__item">
+                        <a href="#"><?= $lot_cat ?></a>
+                    </li>
+                <? endforeach; ?>
             </ul>
         </nav>
         <div class="main-footer__bottom container">
