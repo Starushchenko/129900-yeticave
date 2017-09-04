@@ -1,4 +1,5 @@
 <?php
+ob_start();
 
 require_once('functions.php');
 require_once('lotsdata.php');
@@ -14,9 +15,9 @@ $bets = [
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
-?>
+// Массив категорий
+$lots_categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 
-<? ob_start();
 if (isset($_GET['id']) and array_key_exists($_GET['id'], $lots_list)) : ?>
     <!DOCTYPE html>
     <html lang="ru">
@@ -55,24 +56,11 @@ if (isset($_GET['id']) and array_key_exists($_GET['id'], $lots_list)) : ?>
     <main>
         <nav class="nav">
             <ul class="nav__list container">
-                <li class="nav__item">
-                    <a href="">Доски и лыжи</a>
-                </li>
-                <li class="nav__item">
-                    <a href="">Крепления</a>
-                </li>
-                <li class="nav__item">
-                    <a href="">Ботинки</a>
-                </li>
-                <li class="nav__item">
-                    <a href="">Одежда</a>
-                </li>
-                <li class="nav__item">
-                    <a href="">Инструменты</a>
-                </li>
-                <li class="nav__item">
-                    <a href="">Разное</a>
-                </li>
+                <? foreach ($lots_categories as $lot_cat) {
+                    print("<li class=\"nav__item\">
+                               <a href=\"\">$lot_cat</a>
+                           </li>");
+                } ?>
             </ul>
         </nav>
         <section class="lot-item container">
@@ -139,24 +127,11 @@ if (isset($_GET['id']) and array_key_exists($_GET['id'], $lots_list)) : ?>
     <footer class="main-footer">
         <nav class="nav">
             <ul class="nav__list container">
-                <li class="nav__item">
-                    <a href="all-lots.html">Доски и лыжи</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Крепления</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Ботинки</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Одежда</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Инструменты</a>
-                </li>
-                <li class="nav__item">
-                    <a href="all-lots.html">Разное</a>
-                </li>
+                <? foreach ($lots_categories as $lot_cat) {
+                    print("<li class=\"nav__item\">
+                               <a href=\"\">$lot_cat</a>
+                           </li>");
+                } ?>
             </ul>
         </nav>
         <div class="main-footer__bottom container">
@@ -215,6 +190,7 @@ if (isset($_GET['id']) and array_key_exists($_GET['id'], $lots_list)) : ?>
     </body>
     </html>
 
-<? else : http_response_code(404);
+<? else : header(http_response_code(404));
 endif;
+
 ob_end_flush() ?>
