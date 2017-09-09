@@ -23,7 +23,7 @@ $lots_categories = ["Доски и лыжи", "Крепления", "Ботин�
 $number_inputs = ['lot-rate', 'lot-step'];
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['photo'])) {
     foreach ($_POST as $key => $value) {
         if ($value == '') {
             $errors[] = $key;
@@ -38,10 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = 'category';
     }
     
-    if (isset($_FILES['photo'])) {
+    if (isset($_FILES['photo']['name']) && !empty($_FILES['photo']['name'])) {
+        $photo_info = finfo_open(FILEINFO_MIME_TYPE);
+        $photo_tmp_name = $_FILES['photo']['tmp_name'];
+        $photo_size = $_FILES['photo']['size'];
+        $photo_type = finfo_file($photo_info, $photo_tmp_name);
         $photo_name = $_FILES['photo']['name'];
         $photo_url = 'img/' . $photo_name;
-        move_uploaded_file($_FILES['photo']['tmp_name'], $photo_url);
+        
+        if (($photo_type !== 'image/jpeg') || ($photo_size > 500000)) {
+            $errors[] = 'photo';
+        } else {
+            move_uploaded_file($_FILES['photo']['tmp_name'], $photo_url);
+        }
     } else {
         $errors[] = 'photo';
     }
@@ -54,18 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $filled_step = $_POST['lot-step'] ?? '';
     $filled_date = $_POST['lot-date'] ?? '';
     
-    $page_content = renderTemplate('add-lot', [
-        'errors' => $errors,
-        'lots_categories' => $lots_categories,
-        'lot_name' => $filled_title,
-        'lot_category' => $filled_category,
-        'lot_desc' => $filled_desc,
-        'lot_file' => $filled_file,
-        'lot_rate' => $filled_price,
-        'lot_step' => $filled_step,
-        'lot_date' => $filled_date,
-    ]);
-    
     if (!count($errors)) {
         $page_content = renderTemplate('lot-detail', [
             'lot_title' => $_POST['lot-name'],
@@ -76,11 +73,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'lots_categories' => $lots_categories,
             'bets' => $bets
         ]);
+    } else {
+        $page_content = renderTemplate('add-lot', [
+            'errors' => $errors,
+            'lots_categories' => $lots_categories,
+            'lot_name' => $filled_title,
+            'lot_category' => $filled_category,
+            'lot_desc' => $filled_desc,
+            'lot_file' => $filled_file,
+            'lot_rate' => $filled_price,
+            'lot_step' => $filled_step,
+            'lot_date' => $filled_date,
+        ]);
     }
 } else {
     $page_content = renderTemplate('add-lot', [
-        'errors' => $errors,
-        'lots_categories' => $lots_categories,
+        'lots_categories' => $lots_categories
     ]);
 }
 
