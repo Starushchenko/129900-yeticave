@@ -88,7 +88,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['photo'])) {
     }
 } else {
     $page_content = renderTemplate('add-lot', [
-        'lots_categories' => $lots_categories
+        'errors' => $errors,
+        'lots_categories' => $lots_categories,
+        'lot_name' => $filled_title,
+        'lot_category' => $filled_category,
+        'lot_desc' => $filled_desc,
+        'lot_file' => $filled_file,
+        'lot_rate' => $filled_price,
+        'lot_step' => $filled_step,
+        'lot_date' => $filled_date,
     ]);
 }
 
