@@ -9,39 +9,38 @@ $user_name = 'Константин';
 $user_avatar = 'img/user.jpg';
 
 // Валидация формы добавления лота
-$number_inputs = ['lot-rate', 'lot-step'];
+$rules = [
+    'lot-name' => [
+        'required',
+    ],
+    'category' => [
+        'required',
+    ],
+    'message' => [
+        'required',
+    ],
+    'lot-rate' => [
+        'required',
+        'numeric'
+    ],
+    'lot-step' => [
+        'required',
+        'numeric'
+    ],
+    'lot-date' => [
+        'required',
+    ],
+];
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['photo'])) {
-    foreach ($_POST as $key => $value) {
-        if ($value == '') {
-            $errors[] = $key;
-        }
-        
-        if (in_array($key, $number_inputs) && !is_numeric($value)) {
-            $errors[] = $key;
-        }
-    }
+    
+    
+    $errors = validateForm($rules);
+    $errors[] = validatePicture($_FILES['photo'], $errors);
     
     if ($_POST['category'] == 'Выберите категорию') {
         $errors[] = 'category';
-    }
-    
-    if (isset($_FILES['photo']['name']) && !empty($_FILES['photo']['name'])) {
-        $photo_info = finfo_open(FILEINFO_MIME_TYPE);
-        $photo_tmp_name = $_FILES['photo']['tmp_name'];
-        $photo_size = $_FILES['photo']['size'];
-        $photo_type = finfo_file($photo_info, $photo_tmp_name);
-        $photo_name = $_FILES['photo']['name'];
-        $photo_url = 'img/' . $photo_name;
-        
-        if (($photo_type !== 'image/jpeg') || ($photo_size > 500000)) {
-            $errors[] = 'photo';
-        } else {
-            move_uploaded_file($_FILES['photo']['tmp_name'], $photo_url);
-        }
-    } else {
-        $errors[] = 'photo';
     }
     
     $filled_title = $_POST['lot-name'] ?? '';
