@@ -48,24 +48,11 @@
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
+            <? foreach ($lots_categories as $lot_cat) : ?>
+                <li class="nav__item">
+                    <a href="all-lots.html"><?= $lot_cat ?></a>
+                </li>
+            <? endforeach; ?>
         </ul>
     </nav>
     <div class="main-footer__bottom container">

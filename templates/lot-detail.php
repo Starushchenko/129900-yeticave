@@ -15,7 +15,7 @@
                 <div class="lot-item__image">
                     <img src="<?= htmlspecialchars($lot_image) ?>" width="730" height="548" alt="Сноуборд">
                 </div>
-                <p class="lot-item__category">Категория: <span><?= $lot_category ?></span></p>
+                <p class="lot-item__category">Категория: <span><?= htmlspecialchars($lot_category) ?></span></p>
                 <p class="lot-item__description"><?= htmlspecialchars($lot_desc) ?></p>
             </div>
             <div class="lot-item__right">
@@ -45,8 +45,8 @@
                     <table class="history__list">
                         <? foreach ($bets as $key => $bet) : ?>
                             <tr class="history__item">
-                                <td class="history__name"><?= $bet["name"] ?></td>
-                                <td class="history__price"><?= $bet["price"] ?>р</td>
+                                <td class="history__name"><?= htmlspecialchars($bet["name"]) ?></td>
+                                <td class="history__price"><?= htmlspecialchars($bet["price"]) ?>р</td>
                                 <td class="history__time"><?= calc_time_ago($bet["ts"]) ?></td>
                             </tr>
                         <? endforeach; ?>

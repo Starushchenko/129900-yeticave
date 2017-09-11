@@ -25,9 +25,6 @@ $difference = ($tomorrow - $now);
 $lot_time_remaining = str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60,
         2, '0', STR_PAD_LEFT);
 
-// Массив категорий
-$lots_categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
-
 // Компиляция шаблона страницы
 $page_content = renderTemplate('index',
     ['lots_categories' => $lots_categories, 'lots_list' => $lots_list, 'lot_time_remaining' => $lot_time_remaining]);
@@ -38,6 +35,7 @@ echo renderTemplate('layout', [
     'is_auth' => $is_auth,
     'user_avatar' => $user_avatar,
     'user_name' => $user_name,
+    'lots_categories' => $lots_categories,
     'page_content' => $page_content
 ]);
 ?>
