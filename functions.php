@@ -48,7 +48,7 @@ function renderTemplate($template, $template_data)
     }
 }
 
-//
+// Функция проверки даты в формате DD.MM.YYYY
 function checkDateString(string $date_string)
 {
     if (preg_match('#^[0-3](?(?<=3)[01]|\d)\.[01](?(?<=1)[0-2]|\d)\.20[1-3](?(?<=3)[0-4]|\d)$#', $date_string)) {
@@ -81,8 +81,8 @@ function validatePicture($picture)
     return $result;
 }
 
-// Функция валидации формы
-function addFormToArray($post, $key, $form_data_unit)
+// Функция валидации формы ($_POST, ключ массива $_POST, проверяемое поле)
+function parse_form_data($post, $key, $form_data_unit)
 {
     if (array_key_exists($key, $post)) {
         if ($form_data_unit['rule'] == 'not empty') {
@@ -112,7 +112,7 @@ function addFormToArray($post, $key, $form_data_unit)
             }
         }
         if ($form_data_unit['rule'] == 'choice') {
-            if ($post[$key] != 'Выберите категорию'){
+            if ($post[$key] != 'Выберите категорию' && in_array($post[$key], $form_data_unit['options'])) {
                 $form_data_unit['value'] = $post[$key];
                 $form_data_unit['valid'] = true;
             } else {
@@ -121,6 +121,7 @@ function addFormToArray($post, $key, $form_data_unit)
             }
         }
     }
+    
     return $form_data_unit;
 }
 

@@ -37,13 +37,13 @@
             ><?= $form_data['message']['value'] ?></textarea>
             <span class="form__error"><?= $form_data['message']['valid'] ? '' : 'Описание лота обязательно для заполнения' ?></span>
         </div>
-        <div class="form__item form__item--file<?= $form_data['img_url']['valid'] ? ' form__item--uploaded' : ''; ?> ">
+        <div class="form__item form__item--file<?= $form_data['img-url']['value'] ? ' form__item--uploaded' : ' form__item--invalid'; ?> ">
             <!-- form__item--uploaded -->
             <label>Изображение</label>
             <div class="preview">
                 <button class="preview__remove" type="button">x</button>
                 <div class="preview__img">
-                    <img src="<?= htmlspecialchars($add_item_form['img_url']['value']); ?>" width="113"
+                    <img src="<?= $form_data['img-url']['value']; ?>" width="113"
                          height="113" alt="Изображение лота">
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     <span>+ Добавить</span>
                 </label>
             </div>
-            <span class="form__error"><?= $form_data['img_url']['valid'] ? '' : 'Необходимо прикрепить jpeg-изображение не более 500 Кб' ?></span>
+            <span class="form__error"><?= ($file_valid) ? '' : 'Необходимо прикрепить jpeg-изображение не более 500 Кб' ?></span>
         </div>
         <div class="form__container-three">
             <div class="form__item form__item--small<?= $form_data['lot-rate']['valid'] ? '' : ' form__item--invalid' ?>">
