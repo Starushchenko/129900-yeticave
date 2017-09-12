@@ -81,48 +81,43 @@ function validate_picture($picture)
     return $result;
 }
 
-// Функция валидации формы ($_POST, ключ массива $_POST, проверяемое поле)
-function parse_form_data($post, $key, $form_data_unit)
+// Функции валидации формы: получение данных и проверка-сравнение на правила в массиве
+
+function get_form_data($key, $post, $default)
 {
-    if (array_key_exists($key, $post)) {
-        if ($form_data_unit['rule'] == 'not empty') {
-            if ($post[$key] != '') {
-                $form_data_unit['value'] = $post[$key];
-                $form_data_unit['valid'] = true;
-            } else {
-                $form_data_unit['valid'] = false;
-            }
-        }
-        if ($form_data_unit['rule'] == 'number') {
-            if (is_numeric($post[$key]) && $post[$key] > 0) {
-                $form_data_unit['value'] = $post[$key];
-                $form_data_unit['valid'] = true;
-            } else {
-                $form_data_unit['valid'] = false;
-                $form_data_unit['value'] = null;
-            }
-        }
-        if ($form_data_unit['rule'] == 'date') {
-            if (check_date_string($post[$key])) {
-                $form_data_unit['value'] = $post[$key];
-                $form_data_unit['valid'] = true;
-            } else {
-                $form_data_unit['valid'] = false;
-                $form_data_unit['value'] = '';
-            }
-        }
-        if ($form_data_unit['rule'] == 'choice') {
-            if ($post[$key] != 'Выберите категорию' && in_array($post[$key], $form_data_unit['options'])) {
-                $form_data_unit['value'] = $post[$key];
-                $form_data_unit['valid'] = true;
-            } else {
-                $form_data_unit['valid'] = false;
-                $form_data_unit['value'] = '';
-            }
+    return array_key_exists($key, $post) ? $post[$key] : $default;
+}
+
+function check_form_data($value, $validationRules)
+{
+    if ($validationRules['rule'] == 'not empty') {
+        if ($value != '') {
+            return true;
+        } else {
+            return false;
         }
     }
-    
-    return $form_data_unit;
+    if ($validationRules['rule'] == 'number') {
+        if (is_numeric($value) && $value > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    if ($validationRules['rule'] == 'date') {
+        if (check_date_string($value)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    if ($validationRules['rule'] == 'choice') {
+        if ($value != 'Выберите категорию' && in_array($value, $validationRules['options'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>
