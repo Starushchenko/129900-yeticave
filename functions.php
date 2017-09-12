@@ -62,8 +62,27 @@ function checkDateString(string $date_string)
     return false;
 }
 
+// Функция валидации загруженного изображения
+function validatePicture($picture)
+{
+    $f_type = $picture['type'];
+    $f_size = $picture['size'];
+    $f_tmp_name = $picture['tmp_name'];
+    $f_error = $picture['error'];
+    
+    $mime = ['image/jpeg'];
+    
+    if (is_uploaded_file($f_tmp_name) && in_array($f_type, $mime) && $f_size < 500000 && !$f_error) {
+        $result = true;
+    } else {
+        $result = false;
+    }
+    
+    return $result;
+}
 
-function addFormToArray($post, $key, $form_data_unit)
+// Функция валидации формы
+function addFormToArray($post, $files, $key, $form_data_unit)
 {
     if (array_key_exists($key, $post)) {
         if ($form_data_unit['rule'] == 'not empty') {
@@ -101,59 +120,17 @@ function addFormToArray($post, $key, $form_data_unit)
                 $form_data_unit['value'] = '';
             }
         }
-    }
-    return $form_data_unit;
-}
-
-
-// Функция валидации формы
-function validateForm($rules)
-{
-    $errors = [];
-    foreach ($rules as $key => $rule) {
-        foreach ($rule as $rules_item) {
-            if ($rules_item == 'ruled') {
-                if (!isset($_POST[$key]) || $_POST[$key] == '') {
-                    $errors[] = $key;
-                }
-            }
-            foreach ($rule as $rules_item) {
-                if ($rules_item == 'numeric') {
-                    if (isset($_POST[$key]) && !is_numeric($_POST[$key])) {
-                        $errors[] = $key;
-                    }
-                }
-            }
-            foreach ($rule as $rules_item) {
-                if ($rules_item == 'email') {
-                    if (isset($_POST[$key]) && !filter_var($_POST[$key], FILTER_VALIDATE_EMAIL)) {
-                        $errors[] = $key;
-                    }
-                }
+        if ($form_data_unit['rule'] == 'picture') {
+            if (validatePicture($files[$key])){
+                $form_data_unit['value'] = $files[$key];
+                $form_data_unit['valid'] = true;
+            } else {
+                $form_data_unit['valid'] = false;
+                $form_data_unit['value'] = '';
             }
         }
     }
-    
-    return $errors;
-}
-
-// Функция валидации загруженного изображения
-function validatePicture($picture)
-{
-    $f_type = $picture['type'];
-    $f_size = $picture['size'];
-    $f_tmp_name = $picture['tmp_name'];
-    $f_error = $picture['error'];
-    
-    $mime = ['image/jpeg'];
-    
-    if (is_uploaded_file($f_tmp_name) && in_array($f_type, $mime) && $f_size < 500000 && !$f_error) {
-        $result = true;
-    } else {
-        $result = false;
-    }
-    
-    return $result;
+    return $form_data_unit;
 }
 
 ?>

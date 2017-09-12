@@ -13,7 +13,7 @@
           enctype="multipart/form-data"><!-- form--invalid -->
         <h2>Добавление лота</h2>
         <div class="form__container-two">
-            <div class="form__item<?= $form_data['lot-name']['valid'] ? '' : ' form__item--invalid' ?>">
+            <div class="form__item<?= ($form_data['lot-name']['valid']) ? '' : ' form__item--invalid' ?>">
                 <!-- form__item--invalid -->
                 <label for="lot-name">Наименование</label>
                 <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота"
@@ -37,22 +37,22 @@
             ><?= $form_data['message']['value'] ?></textarea>
             <span class="form__error"><?= $form_data['message']['valid'] ? '' : 'Описание лота обязательно для заполнения' ?></span>
         </div>
-        <div class="form__item form__item--file<?= $form_data['message']['valid'] ? ' form__item--uploaded' : ' form__item--invalid' ?>">
+        <div class="form__item form__item--file<?= $form_data['photo']['valid'] ? '' : ' form__item--invalid' ?>">
             <!-- form__item--uploaded -->
             <label>Изображение</label>
             <div class="preview">
                 <button class="preview__remove" type="button">x</button>
                 <div class="preview__img">
-                    <img src="<?= $form_data['img_url']['value'] ?>" width="113" height="113" alt="Изображение лота">
+                    <img src="<?= $form_data['img_url']['value'] ? $form_data['img_url']['value'] : '' ?>" width="113" height="113" alt="Изображение лота">
                 </div>
             </div>
             <div class="form__input-file">
-                <input class="visually-hidden" name="photo" type="file" id="photo2" value="">
+                <input class="visually-hidden" name="photo" type="file" id="photo2" value="<?= $form_data['photo']['value'] ?>">
                 <label for="photo2">
                     <span>+ Добавить</span>
                 </label>
             </div>
-            <span class="form__error"><?= $form_data['message']['valid'] ? '' : 'Необходимо прикрепить jpeg-изображение не более 500 Кб' ?></span>
+            <span class="form__error"><?= $form_data['photo']['valid'] ? '' : 'Необходимо прикрепить jpeg-изображение не более 500 Кб' ?></span>
         </div>
         <div class="form__container-three">
             <div class="form__item form__item--small<?= $form_data['lot-rate']['valid'] ? '' : ' form__item--invalid' ?>">
