@@ -35,7 +35,7 @@ function calc_time_ago($ts)
 }
 
 // Функция шаблонизации
-function renderTemplate($template, $template_data)
+function render_template($template, $template_data)
 {
     if (file_exists('templates/' . $template . '.php')) {
         ob_start('ob_gzhandler');
@@ -49,7 +49,7 @@ function renderTemplate($template, $template_data)
 }
 
 // Функция проверки даты в формате DD.MM.YYYY
-function checkDateString(string $date_string)
+function check_date_string(string $date_string)
 {
     if (preg_match('#^[0-3](?(?<=3)[01]|\d)\.[01](?(?<=1)[0-2]|\d)\.20[1-3](?(?<=3)[0-4]|\d)$#', $date_string)) {
         if (date('d.m.Y', strtotime($date_string)) == $date_string) {
@@ -63,7 +63,7 @@ function checkDateString(string $date_string)
 }
 
 // Функция валидации загруженного изображения
-function validatePicture($picture)
+function validate_picture($picture)
 {
     $f_type = $picture['type'];
     $f_size = $picture['size'];
@@ -103,7 +103,7 @@ function parse_form_data($post, $key, $form_data_unit)
             }
         }
         if ($form_data_unit['rule'] == 'date') {
-            if (checkDateString($post[$key])) {
+            if (check_date_string($post[$key])) {
                 $form_data_unit['value'] = $post[$key];
                 $form_data_unit['valid'] = true;
             } else {

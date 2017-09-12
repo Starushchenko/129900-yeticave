@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $form_valid = false;
         $file_valid = false;
     } else {
-        if (!validatePicture($_FILES['photo'])) {
+        if (!validate_picture($_FILES['photo'])) {
             $form_valid = false;
             $file_valid = false;
         } else {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
 }
 if ($form_data['img-url']['valid'] && $form_valid) {
-    $page_content = renderTemplate('lot-detail', [
+    $page_content = render_template('lot-detail', [
         'bets' => $bets,
         'lots_categories' => $lots_categories,
         'lot_title' => $form_data['lot-name']['value'],
@@ -59,7 +59,7 @@ if ($form_data['img-url']['valid'] && $form_valid) {
         'lot_price' => $form_data['lot-rate']['value']
     ]);
 } else {
-    $page_content = renderTemplate('add-lot', [
+    $page_content = render_template('add-lot', [
         'form_data' => $form_data,
         'file_valid' => $file_valid,
         'form_valid' => $form_valid,
