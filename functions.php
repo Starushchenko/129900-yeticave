@@ -48,6 +48,63 @@ function renderTemplate($template, $template_data)
     }
 }
 
+//
+function checkDateString(string $date_string)
+{
+    if (preg_match('#^[0-3](?(?<=3)[01]|\d)\.[01](?(?<=1)[0-2]|\d)\.20[1-3](?(?<=3)[0-4]|\d)$#', $date_string)) {
+        if (date('d.m.Y', strtotime($date_string)) == $date_string) {
+            if (strtotime($date_string) > strtotime('now')) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+
+function addFormToArray($post, $key, $form_data_unit)
+{
+    if (array_key_exists($key, $post)) {
+        if ($form_data_unit['rule'] == 'not empty') {
+            if ($post[$key] != '') {
+                $form_data_unit['value'] = $post[$key];
+                $form_data_unit['valid'] = true;
+            } else {
+                $form_data_unit['valid'] = false;
+            }
+        }
+        if ($form_data_unit['rule'] == 'number') {
+            if (is_numeric($post[$key]) && $post[$key] > 0) {
+                $form_data_unit['value'] = $post[$key];
+                $form_data_unit['valid'] = true;
+            } else {
+                $form_data_unit['valid'] = false;
+                $form_data_unit['value'] = null;
+            }
+        }
+        if ($form_data_unit['rule'] == 'date') {
+            if (checkDateString($post[$key])) {
+                $form_data_unit['value'] = $post[$key];
+                $form_data_unit['valid'] = true;
+            } else {
+                $form_data_unit['valid'] = false;
+                $form_data_unit['value'] = '';
+            }
+        }
+        if ($form_data_unit['rule'] == 'choice') {
+            if ($post[$key] != 'Выберите категорию'){
+                $form_data_unit['value'] = $post[$key];
+                $form_data_unit['valid'] = true;
+            } else {
+                $form_data_unit['valid'] = false;
+                $form_data_unit['value'] = '';
+            }
+        }
+    }
+    return $form_data_unit;
+}
+
 
 // Функция валидации формы
 function validateForm($rules)
@@ -55,7 +112,7 @@ function validateForm($rules)
     $errors = [];
     foreach ($rules as $key => $rule) {
         foreach ($rule as $rules_item) {
-            if ($rules_item == 'required') {
+            if ($rules_item == 'ruled') {
                 if (!isset($_POST[$key]) || $_POST[$key] == '') {
                     $errors[] = $key;
                 }
@@ -81,24 +138,22 @@ function validateForm($rules)
 }
 
 // Функция валидации загруженного изображения
-function validatePicture ($picture) {
-    if (isset($picture['name']) && !empty($picture['name'])) {
-        $photo_info = finfo_open(FILEINFO_MIME_TYPE);
-        $photo_tmp_name = $picture['tmp_name'];
-        $photo_size = $picture['size'];
-        $photo_type = finfo_file($photo_info, $photo_tmp_name);
-        $photo_name = $picture['name'];
-        $photo_url = 'img/' . $photo_name;
-        
-        if (($photo_type !== 'image/jpeg') || ($photo_size > 500000)) {
-            return 'photo';
-        } else {
-            move_uploaded_file($picture['tmp_name'], $photo_url);
-            return;
-        }
+function validatePicture($picture)
+{
+    $f_type = $picture['type'];
+    $f_size = $picture['size'];
+    $f_tmp_name = $picture['tmp_name'];
+    $f_error = $picture['error'];
+    
+    $mime = ['image/jpeg'];
+    
+    if (is_uploaded_file($f_tmp_name) && in_array($f_type, $mime) && $f_size < 500000 && !$f_error) {
+        $result = true;
     } else {
-        return 'photo';
+        $result = false;
     }
+    
+    return $result;
 }
 
 ?>
