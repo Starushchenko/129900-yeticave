@@ -82,7 +82,7 @@ function validatePicture($picture)
 }
 
 // Функция валидации формы
-function addFormToArray($post, $files, $key, $form_data_unit)
+function addFormToArray($post, $key, $form_data_unit)
 {
     if (array_key_exists($key, $post)) {
         if ($form_data_unit['rule'] == 'not empty') {
@@ -114,15 +114,6 @@ function addFormToArray($post, $files, $key, $form_data_unit)
         if ($form_data_unit['rule'] == 'choice') {
             if ($post[$key] != 'Выберите категорию'){
                 $form_data_unit['value'] = $post[$key];
-                $form_data_unit['valid'] = true;
-            } else {
-                $form_data_unit['valid'] = false;
-                $form_data_unit['value'] = '';
-            }
-        }
-        if ($form_data_unit['rule'] == 'picture') {
-            if (validatePicture($files[$key])){
-                $form_data_unit['value'] = $files[$key];
                 $form_data_unit['valid'] = true;
             } else {
                 $form_data_unit['valid'] = false;
