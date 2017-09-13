@@ -91,32 +91,16 @@ function get_form_data($key, $post, $default)
 function check_form_data($value, $validationRules)
 {
     if ($validationRules['rule'] == 'not empty') {
-        if ($value != '') {
-            return true;
-        } else {
-            return false;
-        }
+        return ($value != '');
     }
     if ($validationRules['rule'] == 'number') {
-        if (is_numeric($value) && $value > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (is_numeric($value) && $value > 0);
     }
     if ($validationRules['rule'] == 'date') {
-        if (check_date_string($value)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (check_date_string($value));
     }
     if ($validationRules['rule'] == 'choice') {
-        if ($value != 'Выберите категорию' && in_array($value, $validationRules['options'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($value != 'Выберите категорию' && in_array($value, $validationRules['options']));
     }
 }
 
