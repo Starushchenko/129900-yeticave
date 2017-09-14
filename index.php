@@ -3,10 +3,13 @@
 require_once('functions.php');
 require_once('lotsdata.php');
 
-$is_auth = (bool)rand(0, 1);
-
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
+session_start();
+if (isset($_SESSION['user'])) {
+    $is_auth = true;
+    $user_name = $_SESSION['user']['name'];
+} else {
+    $is_auth = false;
+}
 
 // устанавливаем часовой пояс в Московское время
 date_default_timezone_set('Europe/Moscow');
@@ -24,6 +27,7 @@ $now = strtotime('now');
 $difference = ($tomorrow - $now);
 $lot_time_remaining = str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60,
         2, '0', STR_PAD_LEFT);
+
 
 // Компиляция шаблона страницы
 $page_content = render_template('index',

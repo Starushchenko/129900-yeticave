@@ -29,7 +29,7 @@
             <h2>Открытые лоты</h2>
             <select class="lots__select">
                 <? foreach ($lots_categories as $lot_cat) {
-                    print("<option>htmlpsecialchars($lot_cat)</option>");
+                    print("<option>$lot_cat</option>");
                 } ?>
             </select>
         </div>

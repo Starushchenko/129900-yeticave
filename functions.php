@@ -81,8 +81,19 @@ function validate_picture($picture)
     return $result;
 }
 
-// Функции валидации формы: получение данных и проверка-сравнение на правила в массиве
+// Функция поиска элемента в ассоциативном массиве
+function searchInArray($needle, $array, $array_key) {
+    $result = null;
+    foreach ($array as $elem => $value) {
+        if ($array[$elem][$array_key] == $needle) {
+            $result = $array[$elem];
+            break;
+        }
+    }
+    return $result;
+}
 
+// Функции валидации формы: получение данных и проверка-сравнение на правила в массиве
 function get_form_data($key, $post, $default)
 {
     return array_key_exists($key, $post) ? $post[$key] : $default;
@@ -101,6 +112,9 @@ function check_form_data($value, $validationRules)
     }
     if ($validationRules['rule'] == 'choice') {
         return ($value != 'Выберите категорию' && in_array($value, $validationRules['options']));
+    }
+    if ($validationRules['rule'] == 'email') {
+        return (filter_var($value, FILTER_VALIDATE_EMAIL));
     }
 }
 
