@@ -19,6 +19,7 @@
                 <p class="lot-item__description"><?= htmlspecialchars($lot_desc) ?></p>
             </div>
             <div class="lot-item__right">
+                <? if ($is_auth) : ?>
                 <div class="lot-item__state">
                     <div class="lot-item__timer timer">
                         10:54:12
@@ -40,6 +41,7 @@
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>
                 </div>
+                <? endif; ?>
                 <div class="history">
                     <h3>История ставок (<span>4</span>)</h3>
                     <table class="history__list">

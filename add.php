@@ -3,11 +3,13 @@
 require_once('functions.php');
 require_once('lotsdata.php');
 
-$is_auth = (bool)rand(0, 1);
-
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
-
+session_start();
+if (isset($_SESSION['user'])) {
+    $is_auth = true;
+    $user_name = $_SESSION['user']['name'];
+} else {
+    $is_auth = false;
+}
 
 // Валидация формы добавления лота
 $form_valid = true;
@@ -59,13 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $form_valid && $file_valid) {
         'lot_desc' => $form_data['message']['value'],
         'lot_price' => $form_data['lot-rate']['value']
     ]);
-} else {
+} else if ($is_auth) {
     $page_content = render_template('add-lot', [
         'form_data' => $form_data,
         'file_valid' => $file_valid,
         'form_valid' => $form_valid,
         'lots_categories' => $lots_categories
     ]);
+} else {
+    $page_content = render_template('403', []);
 }
 
 // Компиляция шаблона сайта
