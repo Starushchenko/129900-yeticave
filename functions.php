@@ -85,7 +85,7 @@ function validate_picture($picture)
 function searchInArray($needle, $array, $array_key) {
     $result = null;
     foreach ($array as $elem => $value) {
-        if ($array[$elem][$array_key] == $needle) {
+        if ($array[$elem][$array_key] && $array[$elem][$array_key] == $needle) {
             $result = $array[$elem];
             break;
         }
