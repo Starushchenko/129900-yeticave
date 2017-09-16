@@ -1193,6 +1193,7 @@ h2 {
 .rates__timer .timer {
   width: 82px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .rates__timer .timer--win {
