@@ -41,7 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Компиляция шаблона сайта
 $bet_is_made = false;
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['id']) && array_key_exists($_GET['id'], $lots_list) && $form_valid) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['id']) && array_key_exists($_GET['id'],
+        $lots_list) && $form_valid
+) {
     $user_bets[$lots_list[$_GET['id']]['title']] = [
         'bet_index' => $_GET['id'],
         'bet_author' => $user_name,
@@ -53,26 +55,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['id']) && array_key_exis
     header('location: /mylots.php');
     setcookie('bets', $user_bets_encoded, time() + DAY_SECONDS);
     
+} elseif (isset($_GET['id']) && array_key_exists($_GET['id'], $lots_list)) {
+    $page_content = render_template('lot-detail', [
+        'bets' => $bets,
+        'user_bets' => $user_bets,
+        'is_auth' => $is_auth,
+        'lots_categories' => $lots_categories,
+        'form_data' => $form_data,
+        'bet_is_made' => $bet_is_made,
+        'lot_index' => $_GET['id'],
+        'lot_title' => $lots_list[$_GET['id']]['title'],
+        'lot_image' => $lots_list[$_GET['id']]['src'],
+        'lot_category' => $lots_list[$_GET['id']]['category'],
+        'lot_desc' => $lots_list[$_GET['id']]['desc'],
+        'lot_price' => $lots_list[$_GET['id']]['price']
+    ]);
 } else {
-    if (isset($_GET['id']) && array_key_exists($_GET['id'], $lots_list)) {
-        $page_content = render_template('lot-detail', [
-            'bets' => $bets,
-            'user_bets' => $user_bets,
-            'is_auth' => $is_auth,
-            'lots_categories' => $lots_categories,
-            'form_data' => $form_data,
-            'bet_is_made' => $bet_is_made,
-            'lot_index' => $_GET['id'],
-            'lot_title' => $lots_list[$_GET['id']]['title'],
-            'lot_image' => $lots_list[$_GET['id']]['src'],
-            'lot_category' => $lots_list[$_GET['id']]['category'],
-            'lot_desc' => $lots_list[$_GET['id']]['desc'],
-            'lot_price' => $lots_list[$_GET['id']]['price']
-        ]);
-    } else {
-        $page_content = render_template('404', []);
-    }
+    $page_content = render_template('404', []);
 }
+
 
 // Компиляция шаблона сайта
 echo render_template('layout', [
