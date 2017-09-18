@@ -19,28 +19,38 @@
                 <p class="lot-item__description"><?= htmlspecialchars($lot_desc) ?></p>
             </div>
             <div class="lot-item__right">
-                <? if ($is_auth) : ?>
-                <div class="lot-item__state">
-                    <div class="lot-item__timer timer">
-                        10:54:12
-                    </div>
-                    <div class="lot-item__cost-state">
-                        <div class="lot-item__rate">
-                            <span class="lot-item__amount">Текущая цена</span>
-                            <span class="lot-item__cost"><?= htmlspecialchars($lot_price) ?></span>
+                <? if ($is_auth && !$user_bets[$lot_title]) : ?>
+                    <div class="lot-item__state">
+                        <div class="lot-item__timer timer">
+                            10:54:12
                         </div>
-                        <div class="lot-item__min-cost">
-                            Мин. ставка <span>12 000 р</span>
+                        <div class="lot-item__cost-state">
+                            <div class="lot-item__rate">
+                                <span class="lot-item__amount">Текущая цена</span>
+                                <span class="lot-item__cost"><?= htmlspecialchars($lot_price) ?></span>
+                            </div>
+                            <div class="lot-item__min-cost">
+                                Мин. ставка <span>12 000 р</span>
+                            </div>
                         </div>
+                        <form class="lot-item__form" action="/lot.php?id=<?= $lot_index ?>" method="post">
+                            <p class="lot-item__form-item">
+                                <label for="cost">Ваша ставка</label>
+                                <input id="cost" type="number" name="cost" placeholder="12 000">
+                            </p>
+                            <button type="submit" class="button">Сделать ставку</button>
+                        </form>
+                        <span style="font-size: 11px;color: #f84646;"><?= $form_data['cost']['valid'] ? '' : 'Введите числовое значение ставки' ?></span>
                     </div>
-                    <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-                        <p class="lot-item__form-item">
-                            <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="number" name="cost" placeholder="12 000">
-                        </p>
-                        <button type="submit" class="button">Сделать ставку</button>
-                    </form>
-                </div>
+                <? elseif ($is_auth && $user_bets[$lot_title]) : ?>
+                    <div class="lot-item__state">
+                        <p>Вы уже сделали ставку по этому лоту</p>
+                        <a class="button" href="mylots.php">Мои ставки</a>
+                    </div>
+                <? else : ?>
+                    <div class="lot-item__state">
+                        <p>Чтобы сделать ставку, необходимо <a href="/login.php">авторизоваться</a></p>
+                    </div>
                 <? endif; ?>
                 <div class="history">
                     <h3>История ставок (<span>4</span>)</h3>

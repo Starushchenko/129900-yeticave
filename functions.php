@@ -23,16 +23,27 @@ function calc_time_ago($ts)
 {
     $delta_ts = strtotime('now') - $ts;
     
-    if ($delta_ts >= DAY_SECONDS) {
-        print(date("d.m.y в H:i", $ts));
+    if ($delta_ts >= 86400) {
+        return date("d.m.y в H:i", $ts);
     } else {
-        if ($delta_ts >= HOUR_SECONDS) {
-            print($delta_ts / 3600 . " " . words_ending(floor($delta_ts / 3600), ["час", "часа", "часов"]) . " назад");
+        if ($delta_ts >= 3600) {
+            return (floor($delta_ts / 3600) . " " . words_ending(floor($delta_ts / 3600), ["час", "часа", "часов"]) . " назад");
         } else {
-            print($delta_ts / 60 . " " . words_ending(floor($delta_ts / 60), ["минута", "минуты", "минут"]) . " назад");
+            return (floor($delta_ts / 60) . " " . words_ending(floor($delta_ts / 60), ["минута", "минуты", "минут"]) . " назад");
         }
     }
 }
+
+// Функция рассчета промежутка времени между двумя ts в формате HH:MM
+function calt_time_to_tomorrow() {
+    $tomorrow = strtotime('tomorrow midnight');
+    $now = strtotime('now');
+    $difference = ($tomorrow - $now);
+    return str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60,
+            2, '0', STR_PAD_LEFT);
+};
+
+
 
 // Функция шаблонизации
 function render_template($template, $template_data)
@@ -85,7 +96,7 @@ function validate_picture($picture)
 function searchInArray($needle, $array, $array_key) {
     $result = null;
     foreach ($array as $elem => $value) {
-        if ($array[$elem][$array_key] && $array[$elem][$array_key] == $needle) {
+        if (isset($array[$elem][$array_key]) && $array[$elem][$array_key] == $needle) {
             $result = $array[$elem];
             break;
         }

@@ -14,19 +14,8 @@ if (isset($_SESSION['user'])) {
 // устанавливаем часовой пояс в Московское время
 date_default_timezone_set('Europe/Moscow');
 
-// записать в эту переменную оставшееся время в этом формате (ЧЧ:ММ)
-$lot_time_remaining = "00:00";
-
-// временная метка для полночи следующего дня
-$tomorrow = strtotime('tomorrow midnight');
-
-// временная метка для настоящего времени
-$now = strtotime('now');
-
-// значение оставшегося времени в секундах
-$difference = ($tomorrow - $now);
-$lot_time_remaining = str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60,
-        2, '0', STR_PAD_LEFT);
+// Рассчет времени до окончания текущих суток
+$lot_time_remaining = calt_time_to_tomorrow();
 
 
 // Компиляция шаблона страницы
