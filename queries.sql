@@ -1,17 +1,12 @@
 USE yeticave;
 
-INSERT INTO categories
-SET name = 'Доски и лыжи';
-INSERT INTO categories
-SET name = 'Крепления';
-INSERT INTO categories
-SET name = 'Ботинки';
-INSERT INTO categories
-SET name = 'Одежда';
-INSERT INTO categories
-SET name = 'Инструменты';
-INSERT INTO categories
-SET name = 'Разное';
+INSERT INTO categories (name) VALUES
+  ('Доски и лыжи'),
+  ('Крепления'),
+  ('Ботинки'),
+  ('Одежда'),
+  ('Инструменты'),
+  ('Разное');
 
 INSERT INTO users
 SET
@@ -158,7 +153,7 @@ SELECT
   COUNT(bets.lot_id)                            AS bets_count,
   category_id
 FROM lots
-  JOIN categories
+  LEFT JOIN categories
     ON categories.id = lots.category_id
   LEFT JOIN bets
     ON bets.lot_id = lots.id
@@ -169,7 +164,7 @@ ORDER BY lots.create_date DESC;
 /* Получение лота, если название 'Маска Oakley Canopy' или описание включает слово 'Описание' */
 SELECT *
 FROM lots
-WHERE title = 'Маска Oakley Canopy' OR description = '%Описание%';
+WHERE title = 'Маска Oakley Canopy' OR description LIKE '%Описание%';
 
 /* Обновление название лота, у которого id = 6 */
 UPDATE lots
