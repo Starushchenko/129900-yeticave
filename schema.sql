@@ -41,8 +41,6 @@ CREATE TABLE users (
   password_hash   VARCHAR(100)                            NOT NULL,
   avatar_path     VARCHAR(100),
   contacts        VARCHAR(500),
-  created_lots_id INT UNSIGNED                            NOT NULL,
-  created_bets_id INT UNSIGNED                            NOT NULL,
   INDEX (name),
   UNIQUE INDEX (email)
 );
