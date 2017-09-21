@@ -18,7 +18,7 @@ CREATE TABLE lots (
   bet_step    INT UNSIGNED                            NOT NULL,
   fav_count   SMALLINT(10) UNSIGNED                   NOT NULL,
   author_id   INT UNSIGNED                            NOT NULL,
-  winner_id   INT UNSIGNED                            NOT NULL,
+  winner_id   INT UNSIGNED,
   category_id INT UNSIGNED                            NOT NULL,
   INDEX (title),
   INDEX (start_price)
@@ -34,13 +34,13 @@ CREATE TABLE bets (
 );
 
 CREATE TABLE users (
-  id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  reg_date        DATE                                    NOT NULL,
-  email           VARCHAR(100)                            NOT NULL,
-  name            VARCHAR(100)                            NOT NULL,
-  password_hash   VARCHAR(100)                            NOT NULL,
-  avatar_path     VARCHAR(100),
-  contacts        VARCHAR(500),
+  id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  reg_date      DATE                                    NOT NULL,
+  email         VARCHAR(100)                            NOT NULL,
+  name          VARCHAR(100)                            NOT NULL,
+  password_hash VARCHAR(100)                            NOT NULL,
+  avatar_path   VARCHAR(100),
+  contacts      VARCHAR(500),
   INDEX (name),
   UNIQUE INDEX (email)
 );
