@@ -1,8 +1,9 @@
 <?php
 ob_start();
 
-require_once('functions.php');
 require_once('lotsdata.php');
+require_once('mysql_helper.php');
+require_once('init.php');
 
 define("DAY_SECONDS", 86400);
 define("HOUR_SECONDS", 3600);

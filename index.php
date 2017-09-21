@@ -1,7 +1,8 @@
 <?php
 
-require_once('functions.php');
 require_once('lotsdata.php');
+require_once('mysql_helper.php');
+require_once('init.php');
 
 session_start();
 if (isset($_SESSION['user'])) {
