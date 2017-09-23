@@ -27,22 +27,27 @@ function calc_time_ago($ts)
         return date("d.m.y в H:i", $ts);
     } else {
         if ($delta_ts >= 3600) {
-            return (floor($delta_ts / 3600) . " " . words_ending(floor($delta_ts / 3600), ["час", "часа", "часов"]) . " назад");
+            return (floor($delta_ts / 3600) . " " . words_ending(floor($delta_ts / 3600),
+                    ["час", "часа", "часов"]) . " назад");
         } else {
-            return (floor($delta_ts / 60) . " " . words_ending(floor($delta_ts / 60), ["минута", "минуты", "минут"]) . " назад");
+            return (floor($delta_ts / 60) . " " . words_ending(floor($delta_ts / 60),
+                    ["минута", "минуты", "минут"]) . " назад");
         }
     }
 }
 
 // Функция рассчета промежутка времени между двумя ts в формате HH:MM
-function calt_time_to_tomorrow() {
+function calt_time_to_tomorrow()
+{
     $tomorrow = strtotime('tomorrow midnight');
     $now = strtotime('now');
     $difference = ($tomorrow - $now);
-    return str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60,
-            2, '0', STR_PAD_LEFT);
-};
+    
+    return str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60, 2, '0',
+            STR_PAD_LEFT);
+}
 
+;
 
 
 // Функция шаблонизации
@@ -81,9 +86,12 @@ function validate_picture($picture)
     $f_tmp_name = $picture['tmp_name'];
     $f_error = $picture['error'];
     
-    $mime = ['image/jpeg'];
+    $jpeg = ['image/jpeg'];
+    $png = ['image/png'];
     
-    if (is_uploaded_file($f_tmp_name) && in_array($f_type, $mime) && $f_size < 500000 && !$f_error) {
+    if (is_uploaded_file($f_tmp_name) && (in_array($f_type, $jpeg) || in_array($f_type,
+                $png)) && $f_size < 500000 && !$f_error
+    ) {
         $result = true;
     } else {
         $result = false;
@@ -93,7 +101,8 @@ function validate_picture($picture)
 }
 
 // Функция поиска элемента в ассоциативном массиве
-function searchInArray($needle, $array, $array_key) {
+function searchInArray($needle, $array, $array_key)
+{
     $result = null;
     foreach ($array as $elem => $value) {
         if (isset($array[$elem][$array_key]) && $array[$elem][$array_key] == $needle) {
@@ -101,6 +110,7 @@ function searchInArray($needle, $array, $array_key) {
             break;
         }
     }
+    
     return $result;
 }
 
@@ -126,7 +136,73 @@ function check_form_data($value, $validationRules)
     }
     if ($validationRules['rule'] == 'email') {
         return (filter_var($value, FILTER_VALIDATE_EMAIL));
+    } else {
+        return true;
     }
+}
+
+// Функция получения данных из БД
+function get_mysql_data($connect, $sql_query, array $query_values)
+{
+    $data = [];
+    
+    $prepared_statement = db_get_prepare_stmt($connect, $sql_query, $query_values);
+    if ($prepared_statement) {
+        $statement_execute = mysqli_stmt_execute($prepared_statement);
+        if ($statement_execute) {
+            $result = mysqli_stmt_get_result($prepared_statement);
+            if ($result) {
+                $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            }
+        }
+    }
+    
+    return $data;
+}
+
+// Функция вставки данных в БД
+function insert_mysql_data($connect, $db_table, array $inserted_values)
+{
+    $db_columns_names = ''; // строка названий столбцов таблицы, в которые записываются значения
+    $values = [];   // передаваемые значения
+    $placeholders = ''; // строка плейсхолдеров для подготовленного выражения
+    
+    foreach ($inserted_values as $key => $value) {
+        $db_columns_names .= "$key, ";
+        $values[] = $value;
+        $placeholders .= "?, ";
+    }
+    
+    // У строк $db_columns_names и $placeholders удаление ', ' в конце
+    $db_columns_names = substr($db_columns_names, 0, -2);
+    $placeholders = substr($placeholders, 0, -2);
+    
+    $sql_query = 'INSERT INTO ' . $db_table . ' (' . $db_columns_names . ')' . ' VALUES (' . $placeholders . ')';
+    $prepared_statement = db_get_prepare_stmt($connect, $sql_query, $values);
+    if ($prepared_statement) {
+        $statement_execute = mysqli_stmt_execute($prepared_statement);
+        if ($statement_execute) {
+            $last_added_id = mysqli_stmt_insert_id($prepared_statement);
+            
+            return $last_added_id;
+        }
+    }
+    
+    return false;
+}
+
+// Функция выполнения произвольного запроса (кроме SELECT И INSERT)
+function execute_mysql_query($connect, $sql_query, array $query_values)
+{
+    $prepared_statement = db_get_prepare_stmt($connect, $sql_query, $query_values);
+    if ($prepared_statement) {
+        $statement_execute = mysqli_stmt_execute($prepared_statement);
+        if ($statement_execute) {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 ?>

@@ -54,7 +54,7 @@
                     <span>+ Добавить</span>
                 </label>
             </div>
-            <span class="form__error"><?= $file_valid ? '' : 'Необходимо прикрепить jpeg-изображение не более 500 Кб' ?></span>
+            <span class="form__error"><?= $file_valid ? '' : 'Необходимо прикрепить jpeg- или png-изображение не более 500 Кб' ?></span>
         </div>
         <div class="form__container-three">
             <div class="form__item form__item--small<?= $form_data['lot-rate']['valid'] ? '' : ' form__item--invalid' ?>">

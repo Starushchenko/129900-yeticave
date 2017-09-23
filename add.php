@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $form_valid && $file_valid) {
     $page_content = render_template('lot-detail', [
         'bets' => $bets,
+        'is_auth' => $is_auth,
         'lots_categories' => $lots_categories,
         'lot_title' => $form_data['lot-name']['value'],
         'lot_image' => $file_valid,
