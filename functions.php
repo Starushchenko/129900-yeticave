@@ -1,4 +1,7 @@
 <?
+define("IMG_TYPE_JPG", "image/jpeg");
+define("IMG_TYPE_PNG", "image/png");
+
 // Функция правильного окончания слов "минута" и "час" в зависимости от числа
 function words_ending(int $number, array $words_array)
 {
@@ -37,7 +40,7 @@ function calc_time_ago($ts)
 }
 
 // Функция рассчета промежутка времени между двумя ts в формате HH:MM
-function calt_time_to_tomorrow()
+function calc_time_to_tomorrow()
 {
     $tomorrow = strtotime('tomorrow midnight');
     $now = strtotime('now');
@@ -86,12 +89,9 @@ function validate_picture($picture)
     $f_tmp_name = $picture['tmp_name'];
     $f_error = $picture['error'];
     
-    $jpeg = ['image/jpeg'];
-    $png = ['image/png'];
+    $possibleMimeTypes = [IMG_TYPE_JPG, IMG_TYPE_PNG];
     
-    if (is_uploaded_file($f_tmp_name) && (in_array($f_type, $jpeg) || in_array($f_type,
-                $png)) && $f_size < 500000 && !$f_error
-    ) {
+    if (is_uploaded_file($f_tmp_name) && in_array($f_type, $possibleMimeTypes) && $f_size < 500000 && !$f_error) {
         $result = true;
     } else {
         $result = false;
@@ -137,7 +137,7 @@ function check_form_data($value, $validationRules)
     if ($validationRules['rule'] == 'email') {
         return (filter_var($value, FILTER_VALIDATE_EMAIL));
     } else {
-        return true;
+        return false;
     }
 }
 
@@ -148,8 +148,7 @@ function get_mysql_data($connect, $sql_query, array $query_values)
     
     $prepared_statement = db_get_prepare_stmt($connect, $sql_query, $query_values);
     if ($prepared_statement) {
-        $statement_execute = mysqli_stmt_execute($prepared_statement);
-        if ($statement_execute) {
+        if (mysqli_stmt_execute($prepared_statement)) {
             $result = mysqli_stmt_get_result($prepared_statement);
             if ($result) {
                 $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -163,25 +162,15 @@ function get_mysql_data($connect, $sql_query, array $query_values)
 // Функция вставки данных в БД
 function insert_mysql_data($connect, $db_table, array $inserted_values)
 {
-    $db_columns_names = ''; // строка названий столбцов таблицы, в которые записываются значения
-    $values = [];   // передаваемые значения
-    $placeholders = ''; // строка плейсхолдеров для подготовленного выражения
-    
-    foreach ($inserted_values as $key => $value) {
-        $db_columns_names .= "$key, ";
-        $values[] = $value;
-        $placeholders .= "?, ";
-    }
-    
-    // У строк $db_columns_names и $placeholders удаление ', ' в конце
-    $db_columns_names = substr($db_columns_names, 0, -2);
-    $placeholders = substr($placeholders, 0, -2);
+    $db_columns_names = implode(', ',
+        array_keys($inserted_values)); // строка названий столбцов таблицы, в которые записываются значения
+    $placeholders = implode(', ', array_fill(0, count($inserted_values), '?')); // передаваемые значения
+    $values = array_values($inserted_values); // строка плейсхолдеров для подготовленного выражения
     
     $sql_query = 'INSERT INTO ' . $db_table . ' (' . $db_columns_names . ')' . ' VALUES (' . $placeholders . ')';
     $prepared_statement = db_get_prepare_stmt($connect, $sql_query, $values);
     if ($prepared_statement) {
-        $statement_execute = mysqli_stmt_execute($prepared_statement);
-        if ($statement_execute) {
+        if (mysqli_stmt_execute($prepared_statement)) {
             $last_added_id = mysqli_stmt_insert_id($prepared_statement);
             
             return $last_added_id;
@@ -196,8 +185,7 @@ function execute_mysql_query($connect, $sql_query, array $query_values)
 {
     $prepared_statement = db_get_prepare_stmt($connect, $sql_query, $query_values);
     if ($prepared_statement) {
-        $statement_execute = mysqli_stmt_execute($prepared_statement);
-        if ($statement_execute) {
+        if (mysqli_stmt_execute($prepared_statement)) {
             return true;
         }
     }

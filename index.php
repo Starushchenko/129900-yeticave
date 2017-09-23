@@ -16,7 +16,7 @@ if (isset($_SESSION['user'])) {
 date_default_timezone_set('Europe/Moscow');
 
 // Рассчет времени до окончания текущих суток
-$lot_time_remaining = calt_time_to_tomorrow();
+$lot_time_remaining = calc_time_to_tomorrow();
 
 
 // Компиляция шаблона страницы
