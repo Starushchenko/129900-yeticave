@@ -31,7 +31,7 @@ $form_data = [
     'cost' => ['value' => '', 'valid' => true]
 ];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($form_data as $key => $form_data_unit) {
         $value = get_form_data($key, $_POST, '');
         $form_data[$key]['value'] = $value;
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Компиляция шаблона сайта
 $bet_is_made = false;
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['id']) && array_key_exists($_GET['id'],
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id']) && array_key_exists($_GET['id'],
         $lots_list) && $form_valid
 ) {
     $user_bets[$lots_list[$_GET['id']]['title']] = [

@@ -32,7 +32,7 @@ $form_data = [
     'lot-date' => ['value' => '', 'valid' => true]
 ];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($form_data as $key => $form_data_unit) {
         $value = get_form_data($key, $_POST, '');
         
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     };
     
 }
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $form_valid && $file_valid) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
     $page_content = render_template('lot-detail', [
         'bets' => $bets,
         'is_auth' => $is_auth,

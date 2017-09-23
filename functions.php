@@ -71,7 +71,7 @@ function render_template($template, $template_data)
 function check_date_string(string $date_string)
 {
     if (preg_match('#^[0-3](?(?<=3)[01]|\d)\.[01](?(?<=1)[0-2]|\d)\.20[1-3](?(?<=3)[0-4]|\d)$#', $date_string)) {
-        if (date('d.m.Y', strtotime($date_string)) == $date_string) {
+        if (date('d.m.Y', strtotime($date_string)) === $date_string) {
             if (strtotime($date_string) > strtotime('now')) {
                 return true;
             }
@@ -105,7 +105,7 @@ function searchInArray($needle, $array, $array_key)
 {
     $result = null;
     foreach ($array as $elem => $value) {
-        if (isset($array[$elem][$array_key]) && $array[$elem][$array_key] == $needle) {
+        if (isset($array[$elem][$array_key]) && $array[$elem][$array_key] === $needle) {
             $result = $array[$elem];
             break;
         }
@@ -122,19 +122,19 @@ function get_form_data($key, $post, $default)
 
 function check_form_data($value, $validationRules)
 {
-    if ($validationRules['rule'] == 'not empty') {
-        return ($value != '');
+    if ($validationRules['rule'] === 'not empty') {
+        return ($value !== '');
     }
-    if ($validationRules['rule'] == 'number') {
+    if ($validationRules['rule'] === 'number') {
         return (is_numeric($value) && $value > 0);
     }
-    if ($validationRules['rule'] == 'date') {
+    if ($validationRules['rule'] === 'date') {
         return (check_date_string($value));
     }
-    if ($validationRules['rule'] == 'choice') {
-        return ($value != 'Выберите категорию' && in_array($value, $validationRules['options']));
+    if ($validationRules['rule'] === 'choice') {
+        return ($value !== 'Выберите категорию' && in_array($value, $validationRules['options']));
     }
-    if ($validationRules['rule'] == 'email') {
+    if ($validationRules['rule'] === 'email') {
         return (filter_var($value, FILTER_VALIDATE_EMAIL));
     } else {
         return false;
