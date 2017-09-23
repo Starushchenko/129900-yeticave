@@ -1,7 +1,8 @@
 <?
 
-require_once('functions.php');
 require_once('lotsdata.php');
+require_once('mysql_helper.php');
+require_once('init.php');
 
 // Рассчет времени до окончания текущих суток
 $time_remaining = calt_time_to_tomorrow();
