@@ -1,4 +1,5 @@
 <?
+require_once('mysql_helper.php');
 require_once('functions.php');
 
 $connect = mysqli_connect("localhost", "root", "", "yeticave");

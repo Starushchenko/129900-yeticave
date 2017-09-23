@@ -5,7 +5,7 @@ require_once('mysql_helper.php');
 require_once('init.php');
 
 // Рассчет времени до окончания текущих суток
-$time_remaining = calt_time_to_tomorrow();
+$time_remaining = calc_time_to_tomorrow();
 
 session_start();
 if (isset($_SESSION['user'])) {

@@ -16,7 +16,7 @@ if (isset($_SESSION['user'])) {
 date_default_timezone_set('Europe/Moscow');
 
 // Рассчет времени до окончания текущих суток
-$lot_time_remaining = calt_time_to_tomorrow();
+$lot_time_remaining = calc_time_to_tomorrow();
 
 
 // Компиляция шаблона страницы
@@ -27,7 +27,6 @@ $page_content = render_template('index',
 echo render_template('layout', [
     'page_title' => 'Главная страница',
     'is_auth' => $is_auth,
-    'user_avatar' => $user_avatar,
     'user_name' => $user_name,
     'lots_categories' => $lots_categories,
     'page_content' => $page_content

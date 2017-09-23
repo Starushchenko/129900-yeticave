@@ -24,7 +24,7 @@ $form_data = [
     'password' => ['value' => '', 'valid' => true, 'error_message' => 'Введите пароль']
 ];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($form_data as $key => $form_data_unit) {
         
         $value = get_form_data($key, $_POST, '');
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $form_valid) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid) {
     if ($user = searchInArray($form_data['email']['value'], $users, 'email')) {
         if (password_verify($form_data['password']['value'], $user['password'])) {
             $_SESSION['user'] = $user;
@@ -70,8 +70,6 @@ if ($is_auth) {
 echo render_template('layout', [
     'page_title' => 'YetiCave - Авторизация',
     'is_auth' => $is_auth,
-    'user_avatar' => $user_avatar,
-    'user_name' => $user_name,
     'page_content' => $page_content,
     'lots_categories' => $lots_categories
 ]);
