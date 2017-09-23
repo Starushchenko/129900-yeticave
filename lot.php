@@ -80,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id']) && array_key_exi
 echo render_template('layout', [
     'page_title' => $lots_list[$_GET['id']]['title'],
     'is_auth' => $is_auth,
-    'user_avatar' => $user_avatar,
     'user_name' => $user_name,
     'lots_categories' => $lots_categories,
     'page_content' => $page_content

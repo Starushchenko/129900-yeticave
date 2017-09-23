@@ -7,7 +7,7 @@
         <? endforeach; ?>
     </ul>
 </nav>
-<form class="form container<?= ($form_valid) ? '' : ' form--invalid' ?>" action="/login.php" method="post"> <!-- form--invalid -->
+<form class="form container<?= isset($form_valid) ? '' : ' form--invalid' ?>" action="/login.php" method="post"> <!-- form--invalid -->
     <h2>Вход</h2>
     <div class="form__item<?= ($form_data['email']['valid']) ? '' : ' form__item--invalid' ?>"> <!-- form__item--invalid -->
         <label for="email">E-mail*</label>

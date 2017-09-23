@@ -70,8 +70,6 @@ if ($is_auth) {
 echo render_template('layout', [
     'page_title' => 'YetiCave - Авторизация',
     'is_auth' => $is_auth,
-    'user_avatar' => $user_avatar,
-    'user_name' => $user_name,
     'page_content' => $page_content,
     'lots_categories' => $lots_categories
 ]);

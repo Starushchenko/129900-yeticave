@@ -19,7 +19,7 @@
                 <p class="lot-item__description"><?= htmlspecialchars($lot_desc) ?></p>
             </div>
             <div class="lot-item__right">
-                <? if ($is_auth && !$user_bets[$lot_title]) : ?>
+                <? if ($is_auth && !isset($user_bets[$lot_title])) : ?>
                     <div class="lot-item__state">
                         <div class="lot-item__timer timer">
                             10:54:12

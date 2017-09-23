@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
     $page_content = render_template('lot-detail', [
         'bets' => $bets,
+        'user_bets' => [],
         'is_auth' => $is_auth,
         'lots_categories' => $lots_categories,
         'lot_title' => $form_data['lot-name']['value'],
@@ -78,7 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
 echo render_template('layout', [
     'page_title' => 'Добавление лота',
     'is_auth' => $is_auth,
-    'user_avatar' => $user_avatar,
     'user_name' => $user_name,
     'page_content' => $page_content,
     'lots_categories' => $lots_categories

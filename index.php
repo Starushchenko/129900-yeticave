@@ -27,7 +27,6 @@ $page_content = render_template('index',
 echo render_template('layout', [
     'page_title' => 'Главная страница',
     'is_auth' => $is_auth,
-    'user_avatar' => $user_avatar,
     'user_name' => $user_name,
     'lots_categories' => $lots_categories,
     'page_content' => $page_content
