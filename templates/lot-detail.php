@@ -3,46 +3,46 @@
         <ul class="nav__list container">
             <? foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $lot_cat ?></a>
+                    <a href="all-lots.html"><?= $lot_cat['name'] ?></a>
                 </li>
             <? endforeach; ?>
         </ul>
     </nav>
     <section class="lot-item container">
-        <h2><?= htmlspecialchars($lot_title) ?></h2>
+        <h2><?= htmlspecialchars($lot['title']) ?></h2>
         <div class="lot-item__content">
             <div class="lot-item__left">
                 <div class="lot-item__image">
-                    <img src="<?= htmlspecialchars($lot_image) ?>" width="730" height="548" alt="Сноуборд">
+                    <img src="<?= htmlspecialchars($lot['image']) ?>" width="730" height="548" alt="Сноуборд">
                 </div>
-                <p class="lot-item__category">Категория: <span><?= htmlspecialchars($lot_category) ?></span></p>
-                <p class="lot-item__description"><?= htmlspecialchars($lot_desc) ?></p>
+                <p class="lot-item__category">Категория: <span><?= htmlspecialchars($lot['category']) ?></span></p>
+                <p class="lot-item__description"><?= htmlspecialchars($lot['description']) ?></p>
             </div>
             <div class="lot-item__right">
-                <? if ($is_auth && !isset($user_bets[$lot_title])) : ?>
+                <? if ($is_auth && !$bet_is_made) : ?>
                     <div class="lot-item__state">
                         <div class="lot-item__timer timer">
-                            10:54:12
+                            <?= calc_time_to_end(strtotime($lot['finish_date'])); ?>
                         </div>
                         <div class="lot-item__cost-state">
                             <div class="lot-item__rate">
                                 <span class="lot-item__amount">Текущая цена</span>
-                                <span class="lot-item__cost"><?= htmlspecialchars($lot_price) ?></span>
+                                <span class="lot-item__cost"><?= htmlspecialchars($lot['lot_price']) ?></span>
                             </div>
                             <div class="lot-item__min-cost">
-                                Мин. ставка <span>12 000 р</span>
+                                Мин. ставка <span><?= htmlspecialchars($lot['lot_price'] + $lot['bet_step']) ?></span>
                             </div>
                         </div>
-                        <form class="lot-item__form" action="/lot.php?id=<?= $lot_index ?>" method="post">
+                        <form class="lot-item__form" action="/lot.php?id=<?= $lot['lot_id'] ?>" method="post">
                             <p class="lot-item__form-item">
                                 <label for="cost">Ваша ставка</label>
-                                <input id="cost" type="number" name="cost" placeholder="12 000">
+                                <input id="cost" type="number" name="cost" placeholder="<?= htmlspecialchars($lot['lot_price'] + $lot['bet_step']) ?>">
                             </p>
                             <button type="submit" class="button">Сделать ставку</button>
                         </form>
-                        <span style="font-size: 11px;color: #f84646;"><?= $form_data['cost']['valid'] ? '' : 'Введите числовое значение ставки' ?></span>
+                        <span style="font-size: 11px;color: #f84646;"><?= (isset($form_data['cost'])) ? $form_data['cost']['error_text'] : '' ?></span>
                     </div>
-                <? elseif ($is_auth && $user_bets[$lot_title]) : ?>
+                <? elseif ($is_auth && $bet_is_made) : ?>
                     <div class="lot-item__state">
                         <p>Вы уже сделали ставку по этому лоту</p>
                         <a class="button" href="mylots.php">Мои ставки</a>
@@ -53,13 +53,13 @@
                     </div>
                 <? endif; ?>
                 <div class="history">
-                    <h3>История ставок (<span>4</span>)</h3>
+                    <h3>История ставок (<span><?= $bets_count ?></span>)</h3>
                     <table class="history__list">
                         <? foreach ($bets as $key => $bet) : ?>
                             <tr class="history__item">
-                                <td class="history__name"><?= htmlspecialchars($bet["name"]) ?></td>
-                                <td class="history__price"><?= htmlspecialchars($bet["price"]) ?>р</td>
-                                <td class="history__time"><?= calc_time_ago($bet["ts"]) ?></td>
+                                <td class="history__name"><?= htmlspecialchars($bet["user_name"]) ?></td>
+                                <td class="history__price"><?= htmlspecialchars($bet["bet_value"]) ?>р</td>
+                                <td class="history__time"><?= calc_time_ago(strtotime($bet["bet_date"])) ?></td>
                             </tr>
                         <? endforeach; ?>
                     </table>

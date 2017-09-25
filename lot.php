@@ -1,7 +1,6 @@
 <?php
 ob_start();
 
-require_once('lotsdata.php');
 require_once('mysql_helper.php');
 require_once('init.php');
 
@@ -11,15 +10,61 @@ define("HOUR_SECONDS", 3600);
 session_start();
 if (isset($_SESSION['user'])) {
     $is_auth = true;
-    $user_name = $_SESSION['user']['name'];
+    $user = $_SESSION['user'];
 } else {
     $is_auth = false;
+    $user = null;
 }
 
-// Если есть ставки, берем их из cookie
-$user_bets = [];
-if (isset($_COOKIE['bets'])) {
-    $user_bets = json_decode($_COOKIE['bets'], true);
+// Подготовленные выражения для обращений в БД
+$lot_prepared_statement = 'SELECT
+    lots.id as lot_id,
+    users.id as author_id,
+    lots.title as title,
+    lots.image as image,
+    lots.start_price as start_price,
+    categories.name as category,
+    lots.description as description,
+    IFNULL(MAX(bets.bet_value), lots.start_price) as lot_price,
+    lots.bet_step as bet_step,
+    lots.finish_date as finish_date
+  FROM lots
+  LEFT JOIN users
+    ON users.id = lots.author_id
+  LEFT JOIN categories
+    ON categories.id = lots.category_id
+  LEFT JOIN bets
+    ON bets.lot_id = lots.id
+  WHERE
+    lots.id = ?
+  GROUP BY lots.id
+  LIMIT 1
+';
+$bet_prepared_statement = 'SELECT
+    users.name as user_name,
+    users.id as user_id,
+    bets.bet_value as bet_value,
+    bets.bet_date as bet_date
+  FROM bets
+  JOIN users
+    ON users.id = bets.author_id
+  WHERE
+    bets.lot_id = ?
+  ORDER BY
+    bets.bet_date DESC
+';
+
+// Получение данных из БД
+$lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
+$lot = get_mysql_data($connect, $lot_prepared_statement, [intval($_GET['id'])]);
+$bets = get_mysql_data($connect, $bet_prepared_statement, [intval($_GET['id'])]);
+$bets_count = count($bets);
+
+$bet_is_made = false;
+foreach ($bets as $bet) {
+    if ($bet['user_id'] === $user['id']) {
+        $bet_is_made = true;
+    }
 }
 
 // Валидация формы ставки
@@ -28,7 +73,7 @@ $validationRules = [
     'cost' => ['rule' => 'number']
 ];
 $form_data = [
-    'cost' => ['value' => '', 'valid' => true]
+    'cost' => ['value' => '', 'valid' => true, 'error_text' => '']
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -38,38 +83,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $form_data[$key]['valid'] = check_form_data($value, $validationRules[$key]);
         $form_valid = $form_data[$key]['valid'] ? true : false;
     }
+    if (!$form_valid) {
+        $form_data['cost']['error_text'] = 'Введите числовое значение ставки';
+    } else if ($form_data['cost']['value'] < ($lot[0]['lot_price'] + $lot[0]['bet_step'])) {
+        $form_valid = false;
+        $form_data['cost']['error_text'] = 'Ваша ставка меньше минимальной';
+    }
 }
 
 // Компиляция шаблона сайта
-$bet_is_made = false;
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id']) && array_key_exists($_GET['id'],
-        $lots_list) && $form_valid
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($user) && isset($_GET['id']) && isset($lot) && $form_valid
 ) {
-    $user_bets[$lots_list[$_GET['id']]['title']] = [
-        'bet_index' => $_GET['id'],
-        'bet_author' => $user_name,
+    $inserted_bet = insert_mysql_data($connect, bets, [
+        'bet_date' => date("Y-m-d H:i:s"),
         'bet_value' => $form_data['cost']['value'],
-        'bet_timestamp' => strtotime('now')
-    ];
-    $bet_is_made = true;
-    $user_bets_encoded = json_encode($user_bets);
-    header('location: /mylots.php');
-    setcookie('bets', $user_bets_encoded, time() + DAY_SECONDS);
+        'author_id' => $user['id'],
+        'lot_id' => $lot[0]['lot_id']]);
     
-} elseif (isset($_GET['id']) && array_key_exists($_GET['id'], $lots_list)) {
+    
+    if ($inserted_bet) {
+        header('location: /lot.php?id=' . ($_GET['id']));
+    } else {
+        $page_content = render_template('502', []);
+    }
+    
+} elseif (isset($_GET['id']) && isset($lot)) {
     $page_content = render_template('lot-detail', [
+        'lot' => $lot[0],
         'bets' => $bets,
-        'user_bets' => $user_bets,
+        'bets_count' => $bets_count,
         'is_auth' => $is_auth,
         'lots_categories' => $lots_categories,
         'form_data' => $form_data,
         'bet_is_made' => $bet_is_made,
-        'lot_index' => $_GET['id'],
-        'lot_title' => $lots_list[$_GET['id']]['title'],
-        'lot_image' => $lots_list[$_GET['id']]['src'],
-        'lot_category' => $lots_list[$_GET['id']]['category'],
-        'lot_desc' => $lots_list[$_GET['id']]['desc'],
-        'lot_price' => $lots_list[$_GET['id']]['price']
     ]);
 } else {
     $page_content = render_template('404', []);
@@ -78,9 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id']) && array_key_exi
 
 // Компиляция шаблона сайта
 echo render_template('layout', [
-    'page_title' => $lots_list[$_GET['id']]['title'],
+    'page_title' => $lot[0]['title'],
     'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'user' => $user,
     'lots_categories' => $lots_categories,
     'page_content' => $page_content
 ]);

@@ -2,12 +2,15 @@
     <ul class="nav__list container">
         <? foreach ($lots_categories as $lot_cat) : ?>
             <li class="nav__item">
-                <a href="all-lots.html"><?= $lot_cat ?></a>
+                <a href="all-lots.html"><?= $lot_cat['name'] ?></a>
             </li>
         <? endforeach; ?>
     </ul>
 </nav>
 <form class="form container<?= isset($form_valid) ? '' : ' form--invalid' ?>" action="/login.php" method="post"> <!-- form--invalid -->
+    <? if (isset($after_signup_message)) : ?>
+         <p>Теперь вы можете войти, используя свой email и пароль.</p>
+    <? endif; ?>
     <h2>Вход</h2>
     <div class="form__item<?= ($form_data['email']['valid']) ? '' : ' form__item--invalid' ?>"> <!-- form__item--invalid -->
         <label for="email">E-mail*</label>

@@ -19,20 +19,22 @@
             <input class="main-header__search-btn" type="submit" name="find" value="Найти">
         </form>
         <a class="main-header__add-lot button" href="/add.php">Добавить лот</a>
-
+        
         <nav class="user-menu">
             <? if ($is_auth) : ?>
-                <!--<div class="user-menu__image">
-                    <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
-                </div>-->
+                <? if ($user['avatar_path']) : ?>
+                    <div class="user-menu__image">
+                        <img src="<?= $user['avatar_path'] ?>" width="40" height="40" alt="<?= htmlspecialchars($user['name']) ?>">
+                    </div>
+                <? endif; ?>
                 <div class="user-menu__logged">
-                    <p><?= htmlspecialchars($user_name) ?></p>
+                    <p><?= htmlspecialchars($user['name']) ?></p>
                     <p><a href="/logout.php">Выйти из системы</a></p>
                 </div>
             <? else : ?>
                 <ul class="user-menu__list">
                     <li class="user-menu__item">
-                        <a href="#">Регистрация</a>
+                        <a href="/signup.php">Регистрация</a>
                     </li>
                     <li class="user-menu__item">
                         <a href="/login.php">Вход</a>
@@ -50,7 +52,7 @@
         <ul class="nav__list container">
             <? foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $lot_cat ?></a>
+                    <a href="all-lots.html"><?= $lot_cat['name'] ?></a>
                 </li>
             <? endforeach; ?>
         </ul>
@@ -94,7 +96,7 @@
                 </svg>
             </a>
         </div>
-        <a class="main-footer__add-lot button" href="add-lot.html">Добавить лот</a>
+        <a class="main-footer__add-lot button" href="add-lot.php">Добавить лот</a>
         <div class="main-footer__developed-by">
             <span class="visually-hidden">Разработано:</span>
             <a class="logo-academy" href="https://htmlacademy.ru/intensive/php">HTML Academy
