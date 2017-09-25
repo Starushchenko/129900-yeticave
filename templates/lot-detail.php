@@ -19,7 +19,7 @@
                 <p class="lot-item__description"><?= htmlspecialchars($lot['description']) ?></p>
             </div>
             <div class="lot-item__right">
-                <? if ($is_auth && !$bet_is_made) : ?>
+                <? if ($is_auth && !$bet_is_made && !$user_is_author) : ?>
                     <div class="lot-item__state">
                         <div class="lot-item__timer timer">
                             <?= calc_time_to_end(strtotime($lot['finish_date'])); ?>
@@ -46,6 +46,10 @@
                     <div class="lot-item__state">
                         <p>Вы уже сделали ставку по этому лоту</p>
                         <a class="button" href="mylots.php">Мои ставки</a>
+                    </div>
+                <? elseif ($is_auth && $user_is_author) : ?>
+                    <div class="lot-item__state">
+                        <p>Вы являетесь автором лота</p>
                     </div>
                 <? else : ?>
                     <div class="lot-item__state">

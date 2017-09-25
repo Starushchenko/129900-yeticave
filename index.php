@@ -13,7 +13,8 @@ if (isset($_SESSION['user'])) {
     $is_auth = false;
     $user = false;
 }
-// Рассчет времени до окончания текущих суток
+
+// Получение данных из БД
 $lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
 
 $lots_sql_query = 'SELECT

@@ -61,10 +61,14 @@ $bets = get_mysql_data($connect, $bet_prepared_statement, [intval($_GET['id'])])
 $bets_count = count($bets);
 
 $bet_is_made = false;
+$user_is_author = false;
 foreach ($bets as $bet) {
     if ($bet['user_id'] === $user['id']) {
         $bet_is_made = true;
     }
+}
+if ($lot[0]['author_id'] === $user['id']) {
+    $user_is_author = true;
 }
 
 // Валидация формы ставки
@@ -94,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Компиляция шаблона сайта
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($user) && isset($_GET['id']) && isset($lot) && $form_valid
 ) {
-    $inserted_bet = insert_mysql_data($connect, bets, [
+    $inserted_bet = insert_mysql_data($connect, 'bets', [
         'bet_date' => date("Y-m-d H:i:s"),
         'bet_value' => $form_data['cost']['value'],
         'author_id' => $user['id'],
@@ -116,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($user) && isset($_GET['id']) 
         'lots_categories' => $lots_categories,
         'form_data' => $form_data,
         'bet_is_made' => $bet_is_made,
+        'user_is_author' => $user_is_author
     ]);
 } else {
     $page_content = render_template('404', []);
