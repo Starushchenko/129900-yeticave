@@ -39,8 +39,7 @@ ORDER BY lots.create_date DESC';
 $lots_list = get_mysql_data($connect, $lots_sql_query, []);
 
 // Компиляция шаблона страницы
-$page_content = render_template('index',
-    ['lots_categories' => $lots_categories, 'lots_list' => $lots_list]);
+$page_content = render_template('index', ['lots_categories' => $lots_categories, 'lots_list' => $lots_list]);
 
 // Компиляция шаблона сайта
 echo render_template('layout', [

@@ -3,7 +3,7 @@
         <ul class="nav__list container">
             <? foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $lot_cat['name'] ?></a>
+                    <a href="/category_catalog.php?cat=<?= $lot_cat['id'] ?>"><?= $lot_cat['name'] ?></a>
                 </li>
             <? endforeach; ?>
         </ul>
@@ -19,7 +19,7 @@
                 <p class="lot-item__description"><?= htmlspecialchars($lot['description']) ?></p>
             </div>
             <div class="lot-item__right">
-                <? if ($is_auth && !$bet_is_made && !$user_is_author) : ?>
+                <? if ($is_auth && !$bet_is_made && !$user_is_author && (strtotime($lot['finish_date'])) > strtotime('now')) : ?>
                     <div class="lot-item__state">
                         <div class="lot-item__timer timer">
                             <?= calc_time_to_end(strtotime($lot['finish_date'])); ?>
@@ -41,6 +41,13 @@
                             <button type="submit" class="button">Сделать ставку</button>
                         </form>
                         <span style="font-size: 11px;color: #f84646;"><?= (isset($form_data['cost'])) ? $form_data['cost']['error_text'] : '' ?></span>
+                    </div>
+                <? elseif ($is_auth && (strtotime($lot['finish_date'])) <= strtotime('now')) : ?>
+                    <div class="lot-item__state">
+                        <p>Аукцион окончен</p>
+                        <? if (isset($winner)) : ?>
+                            <p>Победитель - <?= $winner ?></p>
+                        <? endif; ?>
                     </div>
                 <? elseif ($is_auth && $bet_is_made) : ?>
                     <div class="lot-item__state">

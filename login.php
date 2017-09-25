@@ -34,7 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid) {
-    $get_user_by_email = get_mysql_data($connect, 'SELECT * FROM users WHERE email = ? LIMIT 1', [$form_data['email']['value']]);
+    $get_user_by_email = get_mysql_data($connect, 'SELECT * FROM users WHERE email = ? LIMIT 1',
+        [$form_data['email']['value']]);
     
     if (isset($get_user_by_email[0])) {
         $user = $get_user_by_email[0];

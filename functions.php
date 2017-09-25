@@ -64,12 +64,15 @@ function calc_time_to_end($ts)
     $difference = ($ts - $now);
     
     if ($difference <= 0) {
-       return '00:00';
-    } else if ($difference > 86400) {
-        return (floor($difference / 86400) . " " . words_ending(floor($difference / 86400), ['день', 'дня', 'дней']));
+        return '00:00';
     } else {
-        return str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60, 2, '0',
-                STR_PAD_LEFT);
+        if ($difference > 86400) {
+            return (floor($difference / 86400) . " " . words_ending(floor($difference / 86400),
+                    ['день', 'дня', 'дней']));
+        } else {
+            return str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60, 2,
+                    '0', STR_PAD_LEFT);
+        }
     }
 }
 

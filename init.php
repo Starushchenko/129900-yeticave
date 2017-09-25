@@ -8,8 +8,7 @@ if (!$connect) {
     $connect_error = mysqli_connect_error();
     
     // Компиляция шаблона страницы
-    $page_content = render_template('error',
-        ['error' => $connect_error]);
+    $page_content = render_template('error', ['error' => $connect_error]);
     
     // Компиляция шаблона сайта
     echo render_template('layout', [

@@ -46,9 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!$form_data['lot-date']['value']) {
         $form_data['lot-date']['error_text'] = 'Введите дату в формате ДД.ММ.ГГГГ';
-    } else if (strtotime(str_replace('.', '-', $form_data['lot-date']['value']).date('H:i:s',time())) < (strtotime('+1 day'))) {
-        $form_valid = false;
-        $form_data['lot-date']['error_text'] = 'Конец аукциона не может быть ранее 24 часов от начала';
+    } else {
+        if (strtotime(str_replace('.', '-', $form_data['lot-date']['value']) . date('H:i:s',
+                    time())) < (strtotime('+1 day'))
+        ) {
+            $form_valid = false;
+            $form_data['lot-date']['error_text'] = 'Конец аукциона не может быть ранее 24 часов от начала';
+        }
     }
     
     foreach ($form_data as $key => $form_data_unit) {
@@ -75,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
         'title' => $form_data['lot-name']['value'],
         'description' => $form_data['message']['value'],
         'create_date' => date("Y-m-d H:i:s"),
-        'finish_date' => date('Y-m-d H:i:s', strtotime(str_replace('.', '-', $form_data['lot-date']['value']).date('H:i:s',time()))),
+        'finish_date' => date('Y-m-d H:i:s',
+            strtotime(str_replace('.', '-', $form_data['lot-date']['value']) . date('H:i:s', time()))),
         'image' => $file_valid,
         'start_price' => $form_data['lot-rate']['value'],
         'bet_step' => $form_data['lot-step']['value'],
@@ -84,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
         'category_id' => searchInArray($form_data['category']['value'], $lots_categories, 'name')['id']
     ]);
     
-    if($added_lot) {
+    if ($added_lot) {
         $lot_prepared_statement = 'SELECT
             lots.id as lot_id,
             users.id as author_id,
@@ -108,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
           GROUP BY lots.id
           LIMIT 1
         ';
-    
+        
         $lot = get_mysql_data($connect, $lot_prepared_statement, [$added_lot]);
         
         $page_content = render_template('lot-detail', [
@@ -125,15 +130,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
         $page_content = render_template('502', []);
     }
     
-} else if ($is_auth) {
-    $page_content = render_template('add-lot', [
-        'form_data' => $form_data,
-        'file_valid' => $file_valid,
-        'form_valid' => $form_valid,
-        'lots_categories' => $lots_categories
-    ]);
 } else {
-    $page_content = render_template('403', []);
+    if ($is_auth) {
+        $page_content = render_template('add-lot', [
+            'form_data' => $form_data,
+            'file_valid' => $file_valid,
+            'form_valid' => $form_valid,
+            'lots_categories' => $lots_categories
+        ]);
+    } else {
+        $page_content = render_template('403', []);
+    }
 }
 
 // Компиляция шаблона сайта

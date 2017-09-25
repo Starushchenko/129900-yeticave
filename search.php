@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ALL);
 
 require_once('init.php');
 
@@ -38,7 +37,7 @@ LIMIT 9 OFFSET ?';
 if (empty($_GET['q'])) {
     $_GET['q'] = null;
 }
-$search_query = '%'.strval($_GET['q']).'%';
+$search_query = '%' . strval($_GET['q']) . '%';
 $current_page = $_GET['page'] ?? 1;
 if (empty($current_page) || $current_page === 1) {
     $offset = 0;

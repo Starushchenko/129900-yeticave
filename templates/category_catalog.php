@@ -10,10 +10,11 @@
     </nav>
     <div class="container">
         <section class="lots">
-            <? if ($search_query === '') : ?>
-                <h2> Вы ничего не ввели в строку поиска </h2>
+            <? if (empty($lots_list)) : ?>
+                <h2>В категории «<span><?= htmlspecialchars($category_name) ?></span>» пока нет лотов</h2>
+                <p><a href="/">Перейти на главную</a></p>
             <? else : ?>
-                <h2>Результаты поиска по запросу «<span><?= htmlspecialchars($search_query) ?></span>»</h2>
+                <h2>Все лоты в категории «<span><?= htmlspecialchars($category_name) ?></span>»</h2>
             <? endif; ?>
             <ul class="lots__list">
                 <? foreach ($lots_list as $key => $lot) : ?>
@@ -30,7 +31,7 @@
                                 <div class="lot__rate">
                                     <span class="lot__amount">Стартовая цена</span>
                                     <span class="lot__cost"><?= htmlspecialchars($lot["start_price"]) ?><b
-                                            class="rub">р</b></span>
+                                                class="rub">р</b></span>
                                 </div>
                                 <div class="lot__timer timer <?= ((strtotime($lot['finish_date']) - strtotime('now')) > 0 && (strtotime($lot['finish_date']) - strtotime('now')) < 3600) ? ' timer timer--finishing' : '' ?>">
                                     <?= calc_time_to_end(strtotime($lot['finish_date'])); ?>
@@ -42,11 +43,12 @@
             </ul>
         </section>
         <? if ($pages_count > 1) : ?>
-        <ul class="pagination-list">
-            <? foreach ($pages as $key => $value) : ?>
-                <li class="pagination-item <?= ($current_page == $value) ? ' pagination-item-active' : '' ?>"><a href="search.php?page=<?= $value ?>&q=<?= $search_query ?>"><?= $value ?></a></li>
-            <? endforeach; ?>
-        </ul>
+            <ul class="pagination-list">
+                <? foreach ($pages as $key => $value) : ?>
+                    <li class="pagination-item <?= ($current_page == $value) ? ' pagination-item-active' : '' ?>">
+                        <a href="category_catalog.php?page=<?= $value ?>&cat=<?= $search_query ?>"><?= $value ?></a></li>
+                <? endforeach; ?>
+            </ul>
         <? endif; ?>
     </div>
 </main>

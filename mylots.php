@@ -41,7 +41,6 @@ if ($is_auth) {
     $page_content = render_template('403', []);
 }
 
-
 // Компиляция шаблона сайта
 echo render_template('layout', [
     'page_title' => 'Мои лоты',

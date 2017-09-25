@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 ob_start();
 
 require_once('mysql_helper.php');
@@ -53,11 +54,21 @@ $bet_prepared_statement = 'SELECT
   ORDER BY
     bets.bet_date DESC
 ';
+$winner_prepared_statement = 'SELECT
+    users.name as winner,
+    lots.winner_id as winner_id
+    FROM lots
+    LEFT JOIN users
+      ON users.id = lots.winner_id
+    WHERE
+      lots.id = ?
+      LIMIT 1';
 
 // Получение данных из БД
 $lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
 $lot = get_mysql_data($connect, $lot_prepared_statement, [intval($_GET['id'])]);
 $bets = get_mysql_data($connect, $bet_prepared_statement, [intval($_GET['id'])]);
+$winner = get_mysql_data($connect, $winner_prepared_statement, [intval($_GET['id'])])[0]['winner'];
 $bets_count = count($bets);
 
 $bet_is_made = false;
@@ -89,20 +100,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (!$form_valid) {
         $form_data['cost']['error_text'] = 'Введите числовое значение ставки';
-    } else if ($form_data['cost']['value'] < ($lot[0]['lot_price'] + $lot[0]['bet_step'])) {
-        $form_valid = false;
-        $form_data['cost']['error_text'] = 'Ваша ставка меньше минимальной';
+    } else {
+        if ($form_data['cost']['value'] < ($lot[0]['lot_price'] + $lot[0]['bet_step'])) {
+            $form_valid = false;
+            $form_data['cost']['error_text'] = 'Ваша ставка меньше минимальной';
+        }
     }
 }
 
 // Компиляция шаблона сайта
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($user) && isset($_GET['id']) && isset($lot) && $form_valid
-) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($user) && isset($_GET['id']) && isset($lot) && $form_valid) {
     $inserted_bet = insert_mysql_data($connect, 'bets', [
         'bet_date' => date("Y-m-d H:i:s"),
         'bet_value' => $form_data['cost']['value'],
         'author_id' => $user['id'],
-        'lot_id' => $lot[0]['lot_id']]);
+        'lot_id' => $lot[0]['lot_id']
+    ]);
     
     
     if ($inserted_bet) {
@@ -115,6 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($user) && isset($_GET['id']) 
     $page_content = render_template('lot-detail', [
         'lot' => $lot[0],
         'bets' => $bets,
+        'winner' => $winner,
         'bets_count' => $bets_count,
         'is_auth' => $is_auth,
         'lots_categories' => $lots_categories,
