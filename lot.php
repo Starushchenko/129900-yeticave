@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+require_once ('vendor/autoload.php');
 ob_start();
 
 require_once('mysql_helper.php');

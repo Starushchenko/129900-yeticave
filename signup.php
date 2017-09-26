@@ -1,6 +1,7 @@
 <?php
 ob_start();
 
+require_once ('vendor/autoload.php');
 require_once('init.php');
 
 define("DAY_SECONDS", 86400);
