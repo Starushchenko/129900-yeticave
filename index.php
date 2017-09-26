@@ -49,7 +49,7 @@ $lots_count = get_mysql_data($connect, 'SELECT COUNT(lots.id) AS lots_count FROM
 $pages_count = ceil($lots_count / 3);
 $pages = range(1, $pages_count);
 
-// Получение лотов и название категории по заданному id категории
+// Получение лотов
 $lots_list = get_mysql_data($connect, $lots_sql_query, [$offset]);
 
 // Компиляция шаблона страницы
