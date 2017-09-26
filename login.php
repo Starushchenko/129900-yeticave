@@ -2,15 +2,6 @@
 require_once ('vendor/autoload.php');
 require_once('init.php');
 
-session_start();
-if (isset($_SESSION['user'])) {
-    $is_auth = true;
-    $user = $_SESSION['user'];
-} else {
-    $is_auth = false;
-    $user = false;
-}
-
 $lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
 
 // Валидация формы авторизации
@@ -76,5 +67,3 @@ echo render_template('layout', [
     'user' => $user,
     'lots_categories' => $lots_categories
 ]);
-
-?>

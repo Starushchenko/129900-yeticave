@@ -1,21 +1,9 @@
 <?php
 require_once ('vendor/autoload.php');
-ob_start();
-
-require_once('mysql_helper.php');
 require_once('init.php');
 
 define("DAY_SECONDS", 86400);
 define("HOUR_SECONDS", 3600);
-
-session_start();
-if (isset($_SESSION['user'])) {
-    $is_auth = true;
-    $user = $_SESSION['user'];
-} else {
-    $is_auth = false;
-    $user = null;
-}
 
 // Подготовленные выражения для обращений в БД
 $lot_prepared_statement = 'SELECT
@@ -149,6 +137,3 @@ echo render_template('layout', [
     'lots_categories' => $lots_categories,
     'page_content' => $page_content
 ]);
-
-
-ob_end_flush() ?>

@@ -8,5 +8,7 @@
             "email": "starushchenkoyaroslav@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "swiftmailer/swiftmailer": "@stable"
+    }
 }

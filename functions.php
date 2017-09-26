@@ -274,5 +274,3 @@ function execute_mysql_query($connect, $sql_query, array $query_values)
     
     return false;
 }
-
-?>

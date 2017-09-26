@@ -1,15 +1,6 @@
 <?php
-
 require_once ('vendor/autoload.php');
 require_once('init.php');
-
-session_start();
-if (isset($_SESSION['user'])) {
-    $is_auth = true;
-    $user = $_SESSION['user'];
-} else {
-    $is_auth = false;
-}
 
 // Получение данных из БД
 $lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
@@ -80,4 +71,3 @@ echo render_template('layout', [
     'lots_categories' => $lots_categories,
     'page_content' => $page_content
 ]);
-?>
