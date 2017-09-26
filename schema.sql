@@ -2,15 +2,16 @@ CREATE DATABASE yeticave;
 USE yeticave;
 
 CREATE TABLE categories (
-  id   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  name VARCHAR(50)                             NOT NULL,
+  id    INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  name  VARCHAR(50)                             NOT NULL,
+  class TEXT,
   UNIQUE INDEX (name)
 );
 
 CREATE TABLE lots (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
   title       VARCHAR(100)                            NOT NULL,
-  description TEXT                                    NOT NULL,
+  description VARCHAR(1000)                           NOT NULL,
   create_date DATETIME                                NOT NULL,
   finish_date DATETIME                                NOT NULL,
   image       VARCHAR(100),

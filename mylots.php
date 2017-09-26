@@ -1,39 +1,51 @@
 <?
 
-require_once('lotsdata.php');
-require_once('mysql_helper.php');
 require_once('init.php');
-
-// Рассчет времени до окончания текущих суток
-$time_remaining = calc_time_to_tomorrow();
 
 session_start();
 if (isset($_SESSION['user'])) {
     $is_auth = true;
-    $user_name = $_SESSION['user']['name'];
+    $user = $_SESSION['user'];
 } else {
     $is_auth = false;
+    $user = false;
 }
 
-// Если есть ставки, берем их из cookie
-$user_bets = [];
-if (isset($_COOKIE['bets'])) {
-    $user_bets = json_decode($_COOKIE['bets'], true);
-}
+$lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
 
-$page_content = render_template('mylots', [
-    'lots_list' => $lots_list,
-    'lots_categories' => $lots_categories,
-    'time_remaining' => $time_remaining,
-    'bets' => $user_bets
+if ($is_auth) {
+    $mybets_prepared_statement = 'SELECT
+        lots.image as image,
+        lots.id as lot_id,
+        lots.title as title,
+        categories.name as category,
+        lots.finish_date as finish_date,
+        bets.bet_value as bet_value,
+        bets.bet_date as bet_date
+    FROM bets
+    JOIN lots
+        ON lots.id = bets.lot_id
+    JOIN categories
+        ON categories.id = lots.category_id
+    WHERE bets.author_id = ?
+    ORDER BY bets.bet_date DESC
+    ';
+    $bets = get_mysql_data($connect, $mybets_prepared_statement, [$user['id']]);
     
-]);
+    $page_content = render_template('mylots', [
+        'lots_categories' => $lots_categories,
+        'bets' => $bets
+    
+    ]);
+} else {
+    $page_content = render_template('403', []);
+}
 
 // Компиляция шаблона сайта
 echo render_template('layout', [
     'page_title' => 'Мои лоты',
     'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'user' => $user,
     'page_content' => $page_content,
     'lots_categories' => $lots_categories
 ]);

@@ -53,18 +53,27 @@ function calc_time_ago(int $ts)
 }
 
 /**
- * Функция рассчета времени до следующих суток в формате HH:MM
+ * Функция рассчета времени указанной временной метки в формате HH:MM
  *
- * @return string Время в формате HH:MM
+ * @param $ts Временная метка
+ * @return string
  */
-function calc_time_to_tomorrow()
+function calc_time_to_end($ts)
 {
-    $tomorrow = strtotime('tomorrow midnight');
     $now = strtotime('now');
-    $difference = ($tomorrow - $now);
+    $difference = ($ts - $now);
     
-    return str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60, 2, '0',
-            STR_PAD_LEFT);
+    if ($difference <= 0) {
+        return '00:00';
+    } else {
+        if ($difference > 86400) {
+            return (floor($difference / 86400) . " " . words_ending(floor($difference / 86400),
+                    ['день', 'дня', 'дней']));
+        } else {
+            return str_pad(floor($difference / 3600), 2, '0', STR_PAD_LEFT) . ":" . str_pad(($difference / 60) % 60, 2,
+                    '0', STR_PAD_LEFT);
+        }
+    }
 }
 
 

@@ -3,7 +3,7 @@
         <ul class="nav__list container">
             <? foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $lot_cat ?></a>
+                    <a href="/category_catalog.php?cat=<?= $lot_cat['id'] ?>"><?= $lot_cat['name'] ?></a>
                 </li>
             <? endforeach; ?>
         </ul>
@@ -25,7 +25,7 @@
                 <select id="category" name="category">
                     <option>Выберите категорию</option>
                     <? foreach ($lots_categories as $lot_cat) : ?>
-                        <option <?= ($form_data['category']['value'] == $lot_cat) ? 'selected' : '' ?>><?= $lot_cat ?></option>
+                        <option <?= ($form_data['category']['value'] === $lot_cat['name']) ? 'selected' : '' ?>><?= $lot_cat['name'] ?></option>
                     <? endforeach; ?>
                 </select>
                 <span class="form__error"><?= $form_data['category']['valid'] ? '' : 'Выберите категорию лота' ?></span>
@@ -74,7 +74,7 @@
                 <input class="form__input-date" id="lot-date" type="text" name="lot-date" placeholder="20.05.2017"
                 
                        value="<?= $form_data['lot-date']['value'] ?>"
-                <span class="form__error"><?= $form_data['lot-date']['valid'] ? '' : 'Введите дату окончания аукциона' ?></span>
+                <span class="form__error"><?= $form_data['lot-date']['error_text'] ?></span>
             </div>
         </div>
         <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
