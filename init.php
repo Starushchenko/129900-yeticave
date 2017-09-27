@@ -21,3 +21,10 @@ if (!$connect) {
     ]);
     exit();
 }
+
+$transport = (new Swift_SmtpTransport('smtp.mail.ru', 465,
+    'ssl'))
+    ->setUsername('doingsdone@mail.ru')
+    ->setPassword('rds7BgcL');
+
+$mailer = new Swift_Mailer($transport);

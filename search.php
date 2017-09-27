@@ -30,7 +30,7 @@ if (empty($_GET['q'])) {
     $_GET['q'] = null;
 }
 $search_query = '%' . strval($_GET['q']) . '%';
-$current_page = $_GET['page'] ?? 1;
+$current_page = (int) $_GET['page'] ?? 1;
 if (empty($current_page) || $current_page === 1) {
     $offset = 0;
 } else {
