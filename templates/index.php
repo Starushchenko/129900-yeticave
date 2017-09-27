@@ -4,11 +4,11 @@
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное
             снаряжение.</p>
         <ul class="promo__list">
-            <? foreach ($lots_categories as $lot_cat) : ?>
+            <?php foreach ($lots_categories as $lot_cat) : ?>
                 <li class="promo__item promo__item--<?= $lot_cat['class'] ?>">
                     <a class="promo__link" href="category_catalog.php?cat=<?= $lot_cat['id'] ?>"><?= $lot_cat['name'] ?></a>
                 </li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
             </li>
         </ul>
     </section>
@@ -16,13 +16,13 @@
         <div class="lots__header">
             <h2>Открытые лоты</h2>
             <select class="lots__select">
-                <? foreach ($lots_categories as $lot_cat) {
+                <?php foreach ($lots_categories as $lot_cat) {
                     print("<option>$lot_cat[name]</option>");
                 } ?>
             </select>
         </div>
         <ul class="lots__list">
-            <? foreach ($lots_list as $key => $lot) : ?>
+            <?php foreach ($lots_list as $key => $lot) : ?>
                 <li class="lots__item lot">
                     <div class="lot__image">
                         <img src="<?= $lot["image"] ?>" width="350" height="260" alt="Сноуборд">
@@ -44,16 +44,16 @@
                         </div>
                     </div>
                 </li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </ul>
     </section>
     
-    <? if ($pages_count > 1) : ?>
+    <?php if ($pages_count > 1) : ?>
         <ul class="pagination-list">
-            <? foreach ($pages as $key => $value) : ?>
+            <?php foreach ($pages as $key => $value) : ?>
                 <li class="pagination-item <?= ($current_page == $value) ? ' pagination-item-active' : '' ?>">
                     <a href="?page=<?= $value ?>"><?= $value ?></a></li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </ul>
-    <? endif; ?>
+    <?php endif; ?>
 </main>

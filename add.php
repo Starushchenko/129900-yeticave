@@ -36,12 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $form_data[$key]['valid'] = check_form_data($value, $validationRules[$key]);
     }
     
-    if (!$form_data['lot-date']['value']) {
+    if (!$form_data['lot-date']['valid']) {
         $form_data['lot-date']['error_text'] = 'Введите дату в формате ДД.ММ.ГГГГ';
     } else {
         if (strtotime(str_replace('.', '-', $form_data['lot-date']['value']) . date('H:i:s',
                     time())) < (strtotime('+1 day'))
         ) {
+            $form_data['lot-date']['valid'] = false;
             $form_valid = false;
             $form_data['lot-date']['error_text'] = 'Конец аукциона не может быть ранее 24 часов от начала';
         }
@@ -113,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
             'bets' => [],
             'bets_count' => 0,
             'user_bets' => [],
+            'user_is_author' => true,
             'is_auth' => $is_auth,
             'lots_categories' => $lots_categories,
             'form_data' => $form_data,

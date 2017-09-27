@@ -1,11 +1,11 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <? foreach ($lots_categories as $lot_cat) : ?>
+            <?php foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
                     <a href="/category_catalog.php?cat=<?= $lot_cat['id'] ?>"><?= $lot_cat['name'] ?></a>
                 </li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <form class="form form--add-lot container<?= ($form_valid) ? '' : ' form--invalid' ?>" action="/add.php"
@@ -24,9 +24,9 @@
                 <label for="category">Категория</label>
                 <select id="category" name="category">
                     <option>Выберите категорию</option>
-                    <? foreach ($lots_categories as $lot_cat) : ?>
+                    <?php foreach ($lots_categories as $lot_cat) : ?>
                         <option <?= ($form_data['category']['value'] === $lot_cat['name']) ? 'selected' : '' ?>><?= $lot_cat['name'] ?></option>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                 </select>
                 <span class="form__error"><?= $form_data['category']['valid'] ? '' : 'Выберите категорию лота' ?></span>
             </div>
@@ -73,7 +73,7 @@
                 <label for="lot-date">Дата завершения</label>
                 <input class="form__input-date" id="lot-date" type="text" name="lot-date" placeholder="20.05.2017"
                 
-                       value="<?= $form_data['lot-date']['value'] ?>"
+                       value="<?= $form_data['lot-date']['value'] ?>">
                 <span class="form__error"><?= $form_data['lot-date']['error_text'] ?></span>
             </div>
         </div>

@@ -2,8 +2,6 @@
 require_once ('vendor/autoload.php');
 require_once('init.php');
 
-error_reporting(E_ALL);
-
 define("DAY_SECONDS", 86400);
 define("HOUR_SECONDS", 3600);
 
@@ -64,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Компиляция шаблона страницы
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
     
-    $inserted_user = insert_mysql_data($connect, users, [
+    $inserted_user = insert_mysql_data($connect, 'users', [
         'reg_date' => date("Y-m-d"),
         'email' => $form_data['email']['value'],
         'name' => $form_data['name']['value'],

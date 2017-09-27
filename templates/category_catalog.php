@@ -1,23 +1,23 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <? foreach ($lots_categories as $lot_cat) : ?>
+            <?php foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
                     <a href="/category_catalog.php?cat=<?= $lot_cat['id'] ?>"><?= $lot_cat['name'] ?></a>
                 </li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <div class="container">
         <section class="lots">
-            <? if (empty($lots_list)) : ?>
+            <?php if (empty($lots_list)) : ?>
                 <h2>В категории «<span><?= htmlspecialchars($category_name) ?></span>» пока нет лотов</h2>
                 <p><a href="/">Перейти на главную</a></p>
-            <? else : ?>
+            <?php else : ?>
                 <h2>Все лоты в категории «<span><?= htmlspecialchars($category_name) ?></span>»</h2>
-            <? endif; ?>
+            <?php endif; ?>
             <ul class="lots__list">
-                <? foreach ($lots_list as $key => $lot) : ?>
+                <?php foreach ($lots_list as $key => $lot) : ?>
                     <li class="lots__item lot">
                         <div class="lot__image">
                             <img src="<?= $lot["image"] ?>" width="350" height="260" alt="Сноуборд">
@@ -39,16 +39,16 @@
                             </div>
                         </div>
                     </li>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </ul>
         </section>
-        <? if ($pages_count > 1) : ?>
+        <?php if ($pages_count > 1) : ?>
             <ul class="pagination-list">
-                <? foreach ($pages as $key => $value) : ?>
+                <?php foreach ($pages as $key => $value) : ?>
                     <li class="pagination-item <?= ($current_page == $value) ? ' pagination-item-active' : '' ?>">
                         <a href="category_catalog.php?page=<?= $value ?>&cat=<?= $search_query ?>"><?= $value ?></a></li>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </ul>
-        <? endif; ?>
+        <?php endif; ?>
     </div>
 </main>
