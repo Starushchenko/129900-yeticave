@@ -29,12 +29,11 @@ GROUP BY lots.id
 ORDER BY lots.create_date DESC
 LIMIT 3 OFFSET ?';
 
-
-$current_page = (int) $_GET['page'] ?? 1;
-if (empty($current_page) || $current_page === 1) {
+$current_page = $_GET['page'] ?? 1;
+if (empty((int) $current_page) || $current_page === 1) {
     $offset = 0;
 } else {
-    $offset = ($current_page - 1) * 3;
+    $offset = ((int) $current_page - 1) * 3;
 }
 $lots_count = get_mysql_data($connect, 'SELECT COUNT(lots.id) AS lots_count FROM lots WHERE lots.finish_date > NOW()',
     [])[0]["lots_count"];

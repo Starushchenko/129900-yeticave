@@ -38,11 +38,11 @@ if (empty($_GET['cat'])) {
  * элементов, $pages - массив страниц на основе количества.
  */
 $search_query = strval($_GET['cat']);
-$current_page = (int) $_GET['page'] ?? 1;
-if (empty($current_page) || $current_page === 1) {
+$current_page = $_GET['page'] ?? 1;
+if (empty((int) $current_page) || $current_page === 1) {
     $offset = 0;
 } else {
-    $offset = ($current_page - 1) * 9;
+    $offset = ((int) $current_page - 1) * 9;
 }
 $lots_count = get_mysql_data($connect, $lots_count_sql_query, [$search_query])[0]["lots_count"];
 $pages_count = ceil($lots_count / 9);

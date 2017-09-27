@@ -2,6 +2,7 @@
 require_once('mysql_helper.php');
 require_once('functions.php');
 require_once('session_init.php');
+error_reporting(E_ALL);
 
 $connect = mysqli_connect("localhost", "root", "", "yeticave");
 

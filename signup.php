@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Компиляция шаблона страницы
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $form_valid && $file_valid) {
     
-    $inserted_user = insert_mysql_data($connect, users, [
+    $inserted_user = insert_mysql_data($connect, 'users', [
         'reg_date' => date("Y-m-d"),
         'email' => $form_data['email']['value'],
         'name' => $form_data['name']['value'],
