@@ -1,11 +1,11 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <? foreach ($lots_categories as $lot_cat) : ?>
+            <?php foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
                     <a href="/category_catalog.php?cat=<?= $lot_cat['id'] ?>"><?= $lot_cat['name'] ?></a>
                 </li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <form class="form container<?= ($form_valid) ? '' : ' form--invalid' ?>" action="/signup.php" enctype="multipart/form-data" method="post"> <!-- form--invalid -->

@@ -21,17 +21,17 @@
         <a class="main-header__add-lot button" href="/add.php">Добавить лот</a>
         
         <nav class="user-menu">
-            <? if ($is_auth) : ?>
-                <? if ($user['avatar_path']) : ?>
+            <?php if ($is_auth) : ?>
+                <?php if ($user['avatar_path']) : ?>
                     <div class="user-menu__image">
                         <img src="<?= $user['avatar_path'] ?>" width="40" height="40" alt="<?= htmlspecialchars($user['name']) ?>">
                     </div>
-                <? endif; ?>
+                <?php endif; ?>
                 <div class="user-menu__logged">
                     <p><?= htmlspecialchars($user['name']) ?></p>
                     <p><a href="/logout.php">Выйти из системы</a></p>
                 </div>
-            <? else : ?>
+            <?php else : ?>
                 <ul class="user-menu__list">
                     <li class="user-menu__item">
                         <a href="/signup.php">Регистрация</a>
@@ -40,7 +40,7 @@
                         <a href="/login.php">Вход</a>
                     </li>
                 </ul>
-            <? endif ?>
+            <?php endif ?>
         </nav>
     </div>
 </header>
@@ -50,11 +50,11 @@
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <? foreach ($lots_categories as $lot_cat) : ?>
+            <?php foreach ($lots_categories as $lot_cat) : ?>
                 <li class="nav__item">
                     <a href="/category_catalog.php?cat=<?= $lot_cat['id'] ?>"><?= $lot_cat['name'] ?></a>
                 </li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <div class="main-footer__bottom container">

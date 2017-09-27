@@ -1,8 +1,8 @@
 <section class="rates container">
     <h2>Мои ставки</h2>
-    <? if (!empty($bets)) : ?>
+    <?php if (!empty($bets)) : ?>
         <table class="rates__list">
-            <? foreach ($bets as $key => $bet) : ?>
+            <?php foreach ($bets as $key => $bet) : ?>
                 <tr class="rates__item<?= (strtotime('now') > strtotime($bet['finish_date'])) ? ' rates__item--end' : ''?>">
                     <td class="rates__info">
                         <div class="rates__img">
@@ -24,9 +24,9 @@
                         <?= calc_time_ago(strtotime($bet['bet_date'])) ?>
                     </td>
                 </tr>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </table>
-    <? else : ?>
+    <?php else : ?>
         <p>Вы пока не сделали ставок</p>
-    <? endif; ?>
+    <?php endif; ?>
 </section>

@@ -2,8 +2,6 @@
 require_once ('vendor/autoload.php');
 require_once('init.php');
 
-error_reporting(E_ALL);
-
 define("DAY_SECONDS", 86400);
 define("HOUR_SECONDS", 3600);
 

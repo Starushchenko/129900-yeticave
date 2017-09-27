@@ -1,4 +1,4 @@
-<?
+<?php
 define("IMG_TYPE_JPG", "image/jpeg");
 define("IMG_TYPE_PNG", "image/png");
 
@@ -107,9 +107,7 @@ function check_date_string(string $date_string)
 {
     if (preg_match('#^[0-3](?(?<=3)[01]|\d)\.[01](?(?<=1)[0-2]|\d)\.20[1-3](?(?<=3)[0-4]|\d)$#', $date_string)) {
         if (date('d.m.Y', strtotime($date_string)) === $date_string) {
-            if (strtotime($date_string) > strtotime('now')) {
-                return true;
-            }
+            return true;
         }
     }
     

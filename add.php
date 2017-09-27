@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (strtotime(str_replace('.', '-', $form_data['lot-date']['value']) . date('H:i:s',
                     time())) < (strtotime('+1 day'))
         ) {
+            $form_data['lot-date']['valid'] = false;
             $form_valid = false;
             $form_data['lot-date']['error_text'] = 'Конец аукциона не может быть ранее 24 часов от начала';
         }

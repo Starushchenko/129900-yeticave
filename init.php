@@ -1,4 +1,6 @@
-<?
+<?php
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
 require_once('mysql_helper.php');
 require_once('functions.php');
 require_once('session_init.php');
