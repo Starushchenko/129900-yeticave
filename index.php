@@ -1,18 +1,10 @@
 <?php
-
+require_once ('vendor/autoload.php');
 require_once('init.php');
+require_once('getwinner.php');
 
 // устанавливаем часовой пояс в Московское время
 date_default_timezone_set('Europe/Moscow');
-
-session_start();
-if (isset($_SESSION['user'])) {
-    $is_auth = true;
-    $user = $_SESSION['user'];
-} else {
-    $is_auth = false;
-    $user = false;
-}
 
 // Получение данных из БД
 $lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
@@ -38,7 +30,7 @@ ORDER BY lots.create_date DESC
 LIMIT 3 OFFSET ?';
 
 
-$current_page = $_GET['page'] ?? 1;
+$current_page = (int) $_GET['page'] ?? 1;
 if (empty($current_page) || $current_page === 1) {
     $offset = 0;
 } else {
@@ -69,4 +61,3 @@ echo render_template('layout', [
     'lots_categories' => $lots_categories,
     'page_content' => $page_content
 ]);
-?>

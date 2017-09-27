@@ -28,7 +28,7 @@ CREATE TABLE lots (
 CREATE TABLE bets (
   id        INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
   bet_date  DATETIME                                NOT NULL,
-  bet_value SMALLINT(10) UNSIGNED                   NOT NULL,
+  bet_value SMALLINT(100) UNSIGNED                   NOT NULL,
   author_id INT UNSIGNED                            NOT NULL,
   lot_id    INT UNSIGNED                            NOT NULL,
   INDEX (bet_value)

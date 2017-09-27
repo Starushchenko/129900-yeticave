@@ -1,19 +1,11 @@
 <?php
-ob_start();
-
+require_once ('vendor/autoload.php');
 require_once('init.php');
+
+error_reporting(E_ALL);
 
 define("DAY_SECONDS", 86400);
 define("HOUR_SECONDS", 3600);
-
-session_start();
-if (isset($_SESSION['user'])) {
-    $is_auth = true;
-    $user = $_SESSION['user'];
-} else {
-    $is_auth = false;
-    $user = null;
-}
 
 $lots_categories = get_mysql_data($connect, 'SELECT * FROM categories', []);
 
@@ -114,4 +106,3 @@ echo render_template('layout', [
     'page_content' => $page_content,
     'lots_categories' => $lots_categories
 ]);
-?>

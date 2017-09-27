@@ -1,6 +1,14 @@
 {
-    "name": "yeticave",
-    "description": "Личный проект «YetiCave» от HTML Academy",
+    "name": "starushchenko/yeticave",
+    "description": "html academy php-project",
     "type": "project",
-    "require": {}
+    "authors": [
+        {
+            "name": "Yaroslav Starushchenko",
+            "email": "starushchenkoyaroslav@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "@stable"
+    }
 }
