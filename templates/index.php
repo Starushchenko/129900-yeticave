@@ -47,4 +47,13 @@
             <? endforeach; ?>
         </ul>
     </section>
+    
+    <? if ($pages_count > 1) : ?>
+        <ul class="pagination-list">
+            <? foreach ($pages as $key => $value) : ?>
+                <li class="pagination-item <?= ($current_page == $value) ? ' pagination-item-active' : '' ?>">
+                    <a href="?page=<?= $value ?>"><?= $value ?></a></li>
+            <? endforeach; ?>
+        </ul>
+    <? endif; ?>
 </main>

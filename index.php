@@ -34,12 +34,32 @@ FROM lots
     ON bets.lot_id = lots.id
 WHERE lots.finish_date > NOW()
 GROUP BY lots.id
-ORDER BY lots.create_date DESC';
+ORDER BY lots.create_date DESC
+LIMIT 3 OFFSET ?';
 
-$lots_list = get_mysql_data($connect, $lots_sql_query, []);
+
+$current_page = $_GET['page'] ?? 1;
+if (empty($current_page) || $current_page === 1) {
+    $offset = 0;
+} else {
+    $offset = ($current_page - 1) * 3;
+}
+$lots_count = get_mysql_data($connect, 'SELECT COUNT(lots.id) AS lots_count FROM lots WHERE lots.finish_date > NOW()',
+    [])[0]["lots_count"];
+$pages_count = ceil($lots_count / 3);
+$pages = range(1, $pages_count);
+
+// Получение лотов
+$lots_list = get_mysql_data($connect, $lots_sql_query, [$offset]);
 
 // Компиляция шаблона страницы
-$page_content = render_template('index', ['lots_categories' => $lots_categories, 'lots_list' => $lots_list]);
+$page_content = render_template('index', [
+    'lots_categories' => $lots_categories,
+    'lots_list' => $lots_list,
+    'pages' => $pages,
+    'pages_count' => $pages_count,
+    'current_page' => $current_page
+]);
 
 // Компиляция шаблона сайта
 echo render_template('layout', [
