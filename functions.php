@@ -55,7 +55,7 @@ function calc_time_ago(int $ts)
 /**
  * Функция рассчета времени указанной временной метки в формате HH:MM
  *
- * @param $ts Временная метка
+ * @param int $ts Временная метка
  * @return string
  */
 function calc_time_to_end($ts)
@@ -141,9 +141,9 @@ function validate_picture(array $picture)
 /**
  * Функция поиска элемента в ассоциативном массиве
  *
- * @param $needle Искомый элемент
+ * @param string $needle Искомый элемент
  * @param array $array Массив, в котором происходит поиск
- * @param $array_key Ключ массива, по которму необходимо искать искомое значение
+ * @param string $array_key Ключ массива, по которму необходимо искать искомое значение
  * @return mixed|null Результат - элемент массива, в котором нашлось искомое значение
  */
 function searchInArray($needle, array $array, $array_key)
@@ -162,7 +162,7 @@ function searchInArray($needle, array $array, $array_key)
 /**
  * Функция получения данных из массива формы
  *
- * @param $key Ключ массива
+ * @param string $key Ключ массива
  * @param array $post Массив, из которого берется значение по ключу
  * @param string $default Значение по умолчанию
  * @return mixed Значение элемента массива $post с ключом $key
