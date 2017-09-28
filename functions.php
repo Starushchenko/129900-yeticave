@@ -164,7 +164,7 @@ function searchInArray($needle, array $array, $array_key)
  *
  * @param $key Ключ массива
  * @param array $post Массив, из которого берется значение по ключу
- * @param $default Значение по умолчанию
+ * @param string $default Значение по умолчанию
  * @return mixed Значение элемента массива $post с ключом $key
  */
 function get_form_data($key, array $post, $default)
@@ -175,7 +175,7 @@ function get_form_data($key, array $post, $default)
 /**
  * Валидация полей формы
  *
- * @param $value Проверяемое значение
+ * @param string $value Проверяемое значение
  * @param array $validationRules Массив с правилами проверки
  * @return bool|mixed
  */
@@ -203,8 +203,8 @@ function check_form_data($value, array $validationRules)
 /**
  * Функция получения данных из БД
  *
- * @param $connect Ресурс соединения
- * @param $sql_query SQL-запрос
+ * @param mysqli $connect Ресурс соединения
+ * @param string $sql_query SQL-запрос
  * @param array $query_values Опционально передаваемые значения
  * @return array|null Результат - массив с данными
  */
@@ -228,8 +228,8 @@ function get_mysql_data($connect, $sql_query, array $query_values)
 /**
  * Функция вставки данных в БД
  *
- * @param $connect Ресурс соединения
- * @param $db_table Таблица mysql, с которой будет происходить работа
+ * @param mysqli $connect Ресурс соединения
+ * @param string $db_table Таблица mysql, с которой будет происходить работа
  * @param array $inserted_values Вставляемые значения
  * @return bool|mixed
  */
@@ -256,8 +256,8 @@ function insert_mysql_data($connect, $db_table, array $inserted_values)
 /**
  * Функция выполнения произвольного запроса (кроме SELECT И INSERT)
  *
- * @param $connect Ресурс соединения
- * @param $sql_query SQL-запрос
+ * @param mysqli $connect Ресурс соединения
+ * @param string $sql_query SQL-запрос
  * @param array $query_values Передаваемые значения
  * @return bool
  */

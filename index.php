@@ -38,7 +38,7 @@ $pages_count = ceil($lots_count / 3);
 $pages = range(1, $pages_count);
 
 // Получение лотов
-$lots_list = get_mysql_data($connect, $lots_sql_query, [$offset]);
+$lots_list = (array)get_mysql_data($connect, $lots_sql_query, [$offset]);
 
 // Компиляция шаблона страницы
 $page_content = render_template('index', [

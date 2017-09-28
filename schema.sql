@@ -1,4 +1,4 @@
-CREATE DATABASE yeticave;
+CREATE DATABASE IF NOT EXISTS yeticave DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE yeticave;
 
 CREATE TABLE categories (
